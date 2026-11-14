@@ -1,11 +1,14 @@
-/* chispa · service worker: guarda la app para que abra sin internet. No envía nada a ningún lado. */
+/* chispa · service worker: guarda la app y sus ilustraciones para que abra sin internet. No envía nada a ningún lado. */
 'use strict';
-const VERSION = 'chispa-v1.0.0';
+const VERSION = 'chispa-v2.0.0';
 const VOZ = 'chispa-voz-1';
-const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './css/chispa.css',
+importScripts('js/imagenes.js', 'js/audios.js');
+const NUCLEO = ['./', './index.html', './manifest.webmanifest', './css/chispa.css',
   './fonts/bricolage.woff2', './fonts/lexend-400.woff2', './fonts/lexend-500.woff2', './fonts/lexend-600.woff2',
-  './js/arte.js', './js/contenido.js', './js/app.js',
+  './js/imagenes.js', './js/audios.js', './js/arte.js', './js/datos/base.js', './js/datos/rutas-1.js', './js/datos/rutas-2.js',
+  './js/datos/rutas-3.js', './js/datos/rutas-4.js', './js/datos/extras.js', './js/nucleo.js', './js/actividades.js', './js/pantallas.js',
   './icons/icono.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
+const ARCHIVOS = NUCLEO.concat((self.IMAGENES || []).map(u => './' + u));
 self.addEventListener('install', ev => { ev.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', ev => { ev.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== VOZ).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', ev => {
