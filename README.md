@@ -24,6 +24,15 @@ Siete juegos de 8 niveles con 3 estrellas. El nivel 1 se juega dentro de un epis
 
 Ningún juego tiene tiempo límite. En el arroyo lo que se mueve se puede pausar, se detiene solo cuando una cosa tiene el foco del teclado y la basura que no se alcanza queda atascada en la reja. Con «Juegos sin tiempo» o «Menos movimiento», todo queda quieto. Cada juego se puede jugar con toques, con el teclado o arrastrando.
 
+## Interfaz 2.2: un solo sistema de diseño
+- **Tokens** en `css/chispa.css` (`:root`): espacios de 4 en 4 (`--e1` a `--e8`), radios (`--r-s` 12, `--r-m` 16, `--r-l` 24, `--r-xl` 32), bordes, sombras, alturas de control (56 y 48) y escala de letra (34, 28, 22, 18, 16, 15, 13).
+- **Regla de la interfaz:** lo que se toca tiene borde oscuro y sombra dura (se «aprieta» al tocarlo); lo que solo informa tiene borde suave; lo bloqueado, borde punteado. Un solo botón primario (ámbar) por pantalla.
+- **Inicio:** mapa nuevo (`herramientas/mapa.py` arma `img/fondos/mapa-barrio.svg` con calles continuas, arroyo, faroles y árboles; reutiliza las viñetas de Figma de `herramientas/fuentes/`). El mapa va en línea: las zonas sin empezar se ven apagadas y los faroles se encienden con el avance.
+- **Álbum:** libro con portada, índice de 9 secciones y una página por sección (`#album`, `#album/indice`, `#album/<zona>`).
+- **Reto:** frasco de cocuyos; cada día hecho enciende uno.
+- **Cierre:** rayos, confeti, estrellas una por una, cromo que entra volteándose y avance de la zona, con concordancia («el parque brilla», «los techos brillan»).
+- **Clasificar:** el objeto va en una bandeja aparte; las canecas llevan su color.
+
 ## Principios
 - Sin cuentas, sin datos personales, sin publicidad ni notificaciones (Ley 1581 de 2012): todo se guarda solo en el aparato.
 - Funciona sin conexión después de la primera visita.

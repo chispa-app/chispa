@@ -174,7 +174,7 @@
     reto: s('<rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/><path d="m9 14.5 2 2 4-4"/>'),
     casillero: s('<path d="M7 9a5 5 0 0 1 10 0v10.5a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9z"/><path d="M10 4.2h4M9.5 13h5v3.5h-5z"/>'),
     estrella: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8L3.5 9.4l5.9-.8L12 3.2z" fill="#FFB627" stroke="#2B211D" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-    estrellaVacia: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8L3.5 9.4l5.9-.8L12 3.2z" fill="#EFE3CF" stroke="#B9A88F" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+    estrellaVacia: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8L3.5 9.4l5.9-.8L12 3.2z" fill="#EFE3CF" stroke="#8C7A66" stroke-width="1.6" stroke-linejoin="round"/></svg>',
     candado: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="10" rx="2.5" fill="currentColor"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" stroke="currentColor" stroke-width="2.2" fill="none"/></svg>',
     check: s('<path d="m6 12.5 4 4 8-8.5"/>', 'stroke-width="2.8"'),
     ajustes: s('<circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.5M12 18v2.5M3.5 12H6M18 12h2.5M6 6l1.8 1.8M16.2 16.2 18 18M6 18l1.8-1.8M16.2 7.8 18 6"/>'),

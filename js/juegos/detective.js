@@ -142,7 +142,7 @@
         }));
       }
       function siguienteBoton() {
-        const b = document.createElement('button'); b.className = 'btn btn-oscuro btn-seguir'; b.textContent = k < preguntas.length - 1 ? 'Siguiente pista' : 'Cerrar el caso';
+        const b = document.createElement('button'); b.className = 'btn btn-primario btn-seguir'; b.textContent = k < preguntas.length - 1 ? 'Siguiente pista' : 'Cerrar el caso';
         b.addEventListener('click', () => { k++; if (k < preguntas.length) una(); else api.ganar(api.porErrores(1, 3), `Resolviste ${preguntas.length} pistas${api.errores ? ` con ${api.errores} intento${api.errores > 1 ? 's' : ''} de más` : ' sin un solo error'}. Un buen detective lee el título, la leyenda, el eje y la fuente.`); });
         api.ctrl.appendChild(b); b.focus({ preventScroll: true });
       }

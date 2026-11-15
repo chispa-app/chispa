@@ -11,7 +11,7 @@
     const ic = id === 'especial'
       ? `<svg viewBox="0 0 36 44" aria-hidden="true"><rect x="7" y="9" width="22" height="31" rx="5" fill="#FFF0D6" stroke="#2B211D" stroke-width="2.5" stroke-dasharray="4 3"/><path d="M14 4h8v6h-8z" fill="#FFB627" stroke="#2B211D" stroke-width="2"/></svg>`
       : `<svg viewBox="0 0 36 44" aria-hidden="true"><rect x="5" y="10" width="26" height="31" rx="4" fill="${c.color}" stroke="#2B211D" stroke-width="2.5"/><rect x="2" y="5" width="32" height="7" rx="3" fill="${c.color}" stroke="#2B211D" stroke-width="2.5"/><rect x="13" y="1.5" width="10" height="5" rx="2" fill="${c.color}" stroke="#2B211D" stroke-width="2"/></svg>`;
-    return `<button class="destino caneca-t" data-destino="${id}" ${extra}>${ic}<b>${c.nombre}</b><span>${c.sub}</span></button>`;
+    return `<button class="destino caneca-t caneca-${id}" data-destino="${id}" style="--cc:${id === 'especial' ? '#FFB627' : c.color}" ${extra}>${ic}<b>${c.nombre}</b><span>${c.sub}</span></button>`;
   };
   const tarjetaObj = (o, n, cls = '') => `<div class="obj-t ${cls}">${CH.ilus('objeto', o, { alt: '' })}<span>${esc(n)}</span></div>`;
   const picto = P => {
@@ -127,7 +127,7 @@
         respuesta(bien, titulo, texto, extra = '') {
           let r = hoja.querySelector('.resp');
           if (!r) { r = document.createElement('div'); hoja.prepend(r); }
-          r.className = 'resp ' + (bien ? 'bien' : 'casi'); r.setAttribute('role', 'status');
+          r.className = 'resp ' + (bien ? 'bien' : 'casi');
           r.innerHTML = `${CH.cocuyo(bien ? 'feliz' : 'pensando', 'mini')}<div><p class="titulo">${esc(titulo)}</p>${texto ? `<p>${esc(texto)}</p>` : ''}${extra}</div>`;
           CH.anunciar(titulo + '. ' + (texto || ''));
           return r;
@@ -135,7 +135,7 @@
         limpiarRespuesta() { const r = hoja.querySelector('.resp'); if (r) r.remove(); },
         // Botón para seguir; avanza solo cuando la voz termina.
         seguir(fn, { texto = 'Seguir', voz = null, auto = true } = {}) {
-          const b = document.createElement('button'); b.className = 'btn btn-oscuro btn-seguir'; b.textContent = texto;
+          const b = document.createElement('button'); b.className = 'btn btn-primario btn-seguir'; b.textContent = texto;
           let hecho = false; const ir = () => { if (hecho) return; hecho = true; clearTimeout(temporizador); fn(); };
           b.addEventListener('click', ir);
           const cont = hoja.querySelector('[data-acciones]') || hoja;
@@ -187,7 +187,7 @@
         const pieza = CH.hayImagen('escena', im) ? CH.ilus('escena', im, { cls: 'escena-img' }) : (p.objs ? `<div class="escena-objs">${p.objs.map(o => CH.ilus('objeto', o)).join('')}</div>` : '');
         if (pieza) ctx.lienzo.insertAdjacentHTML('afterbegin', `<div class="escena-cuadro">${pieza}</div>`);
       } else if (obj.o) ctx.lienzo.insertAdjacentHTML('afterbegin', `<div class="escena-cuadro solo-obj">${CH.ilus('objeto', obj.o)}</div>`);
-      ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(p.titulo || ctx.ep.titulo)}</p><div class="puntos" aria-hidden="true">${lineas.map((_, j) => `<i class="${j <= k ? 'si' : ''}"></i>`).join('')}</div><div data-acciones class="acciones"></div>`;
+      ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(p.titulo || ctx.ep.titulo)}</h2><div data-acciones class="acciones"></div>`;
       ctx.seguir(() => { k++; if (k < lineas.length) una(); else ctx.terminar(); }, { texto: k < lineas.length - 1 ? 'Seguir' : (p.fin || '¡Vamos!'), voz: obj });
     }
     una();
@@ -199,7 +199,7 @@
     let halladas = 0;
     ctx.lienzo.innerHTML = `<div class="busca" role="group" aria-label="${esc(T(p.pide))}">${cosas.map((c, j) =>
       `<button class="busca-c" style="left:${c.x}%;top:${c.y}%" data-j="${j}" aria-label="${esc(c.n)}">${CH.ilus('objeto', c.o)}</button>`).join('')}</div>`;
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><p class="contador" aria-live="polite"><b data-n>0</b> de ${meta}</p><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><p class="contador" aria-live="polite"><b data-n>0</b> de ${meta}</p><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     CH.on('.busca-c', 'click', ev => {
       const b = ev.currentTarget, c = cosas[+b.dataset.j];
@@ -229,9 +229,11 @@
     let k = 0;
     function una() {
       const c = cosas[k];
-      ctx.actor(p.pide, ctx.quien, 'curioso');
+      ctx.actor(null, ctx.quien, 'curioso');   // la instrucción va en la voz y en la bandeja: un solo mensaje en pantalla
       ctx.hoja.innerHTML = `<div class="arr-fila"><span class="chip-act">${esc(p.etiqueta || 'Clasifica')} · ${k + 1} de ${cosas.length}</span></div>
-        <div class="arr-pregunta"><div class="obj-t grande" id="obj-arr" tabindex="-1" style="touch-action:none">${CH.ilus('objeto', c.o)}<span>${esc(c.n)}</span></div><p class="hoja-titulo">${esc(T(p.pregunta || '¿A dónde va?'))}</p></div>
+        <div class="bandeja"><div class="obj-t grande" id="obj-arr" tabindex="-1" style="touch-action:none" aria-label="${esc(c.n)}">${CH.ilus('objeto', c.o)}</div>
+          <div class="bandeja-txt"><span class="bandeja-et">${esc(p.etiqueta === 'Elige' ? 'Piensa en esto' : 'Clasifica esto')}</span><b>${esc(c.n)}</b><span class="t-nota">Arrástralo o toca dónde va</span></div></div>
+        <h2 class="hoja-titulo destinos-titulo">${esc(T(p.pregunta || '¿A dónde va?'))}</h2>
         <div class="destinos n${destinos.length}" role="group" aria-label="Opciones">${destinos.map(d => typeof d === 'string' ? caneca(d) : `<button class="destino" data-destino="${d.id}">${d.o ? CH.ilus('objeto', d.o) : ''}<b>${esc(d.n)}</b>${d.sub ? `<span>${esc(d.sub)}</span>` : ''}</button>`).join('')}</div>
         <div data-acciones class="acciones"></div>`;
       if (k === 0) CH.hablar(p.pide); else CH.hablar(c.n);
@@ -261,7 +263,7 @@
     const pasos = CH.nivel(p, 'pasos'), des = CH.mezclar(pasos);
     let n = 0;
     ctx.actor(null, ctx.quien, 'pensando');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <ol class="secuencia">${pasos.map((_, j) => `<li data-hueco="${j}"><span class="num">${j + 1}</span><span class="txt">…</span></li>`).join('')}</ol>
       <div class="fichas">${des.map(x => `<button class="ficha" data-p="${pasos.indexOf(x)}">${x.o ? CH.ilus('objeto', x.o) : ''}<span>${esc(x.n)}</span></button>`).join('')}</div>
       <div data-acciones class="acciones"></div>`;
@@ -289,7 +291,7 @@
     function una() {
       const c = cartas[k];
       ctx.lienzo.innerHTML = `<div class="vm-zona"><div class="vm-carta" tabindex="0" role="group" aria-label="Afirmación ${k + 1} de ${cartas.length}"><span class="vm-n">${k + 1} / ${cartas.length}</span><p>${esc(T(c))}</p></div><p class="vm-guia" aria-hidden="true"><span>← Mito</span><span>Verdad →</span></p></div>`;
-      ctx.hoja.innerHTML = `<p class="hoja-titulo">¿Verdad o mito?</p><div class="vm-botones"><button class="btn vm-mito" data-v="0">Mito</button><button class="btn vm-verdad" data-v="1">Verdad</button></div><div data-acciones class="acciones"></div>`;
+      ctx.hoja.innerHTML = `<h2 class="hoja-titulo">¿Verdad o mito?</h2><div class="vm-botones"><button class="btn vm-mito" data-v="0">Mito</button><button class="btn vm-verdad" data-v="1">Verdad</button></div><div data-acciones class="acciones"></div>`;
       CH.hablar({ t: '¿Verdad o mito? ' + T(c) });
       const carta = ctx.lienzo.querySelector('.vm-carta');
       let x0 = null;
@@ -318,7 +320,7 @@
     const der = CH.mezclar(pares.map((x, j) => ({ ...x.b, j })));
     let sel = null, hechos = 0;
     ctx.actor(null, ctx.quien, 'curioso');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <div class="une"><div class="col" role="group" aria-label="Columna 1">${pares.map((x, j) => `<button class="une-i" data-a="${j}">${x.a.o ? CH.ilus('objeto', x.a.o) : ''}<span>${esc(x.a.n)}</span></button>`).join('')}</div>
       <div class="col" role="group" aria-label="Columna 2">${der.map(x => `<button class="une-i" data-b="${x.j}">${x.o ? CH.ilus('objeto', x.o) : ''}<span>${esc(x.n)}</span></button>`).join('')}</div></div>
       <div data-acciones class="acciones"></div>`;
@@ -349,7 +351,7 @@
     let v = p.inicio != null ? p.inicio : Math.round((p.min + p.max) / 2 / p.paso) * p.paso;
     const fmt = n => n.toLocaleString('es-CO');
     ctx.actor(null, ctx.quien, 'pensando');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <div class="estima"><output class="estima-v" for="rango"><b data-v>${fmt(v)}</b> ${esc(p.unidad)}</output>
       <input id="rango" type="range" min="${p.min}" max="${p.max}" step="${p.paso}" value="${v}" aria-label="Tu cálculo en ${esc(p.unidad)}">
       <div class="estima-ext" aria-hidden="true"><span>${fmt(p.min)}</span><span>${fmt(p.max)}</span></div></div>
@@ -371,7 +373,7 @@
   /* Dato: pregunta de tres opciones y el dato con su fuente. */
   ACT.dato = (p, ctx) => {
     ctx.actor(null, ctx.quien, 'curioso');
-    ctx.hoja.innerHTML = `<p class="chip-act">Antes de ver el dato, ¿qué crees?</p><p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<p class="chip-act">Antes de ver el dato, ¿qué crees?</p><h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <div class="opciones-col">${p.ops.map((o, j) => `<button class="opcion" data-i="${j}">${esc(o)}</button>`).join('')}</div><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     CH.on('[data-i]', 'click', ev => {
@@ -393,7 +395,7 @@
       <div class="ad-capa ad-antes">${escenaAD(p.antes)}<span class="ad-rot">${esc(p.antes.r || 'Antes')}</span></div>
       <div class="ad-capa ad-despues">${escenaAD(p.despues)}<span class="ad-rot">${esc(p.despues.r || 'Después')}</span></div>
       <div class="ad-manija" aria-hidden="true"><i></i></div></div>`;
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><label class="ad-control"><span>Mueve la cortina</span><input type="range" min="0" max="100" value="50" data-cortina aria-label="Cortina entre antes y después"></label><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><label class="ad-control"><span>Mueve la cortina</span><input type="range" min="0" max="100" value="50" data-cortina aria-label="Cortina entre antes y después"></label><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     const ad = ctx.lienzo.querySelector('.ad'), rango = ctx.hoja.querySelector('[data-cortina]');
     let movido = false;
@@ -408,7 +410,7 @@
       const q = p.pregunta;
       if (!q) { ctx.seguir(ctx.terminar, { voz: p.cierre || null, auto: false }); return; }
       const cont = document.createElement('div'); cont.className = 'opciones-col';
-      cont.innerHTML = `<p class="hoja-titulo">${esc(T(q))}</p>${q.ops.map((o, j) => `<button class="opcion" data-i="${j}">${esc(o)}</button>`).join('')}`;
+      cont.innerHTML = `<h2 class="hoja-titulo">${esc(T(q))}</h2>${q.ops.map((o, j) => `<button class="opcion" data-i="${j}">${esc(o)}</button>`).join('')}`;
       ctx.hoja.querySelector('[data-acciones]').before(cont);
       CH.hablar(q);
       CH.on('[data-i]', 'click', ev => {
@@ -424,7 +426,7 @@
     const ranuras = p.ranuras, piezas = CH.mezclar(p.piezas);
     let sel = null, llenas = 0;
     ctx.lienzo.innerHTML = `<div class="tablero ${p.modo || ''}"><div class="ranuras">${ranuras.map((r, j) => `<button class="ranura" data-destino="${j}" aria-label="${esc(r.n)}: vacío"><span class="ranura-n">${esc(r.n)}</span><span class="ranura-in"></span></button>`).join('<span class="cable" aria-hidden="true"></span>')}</div>${p.modo === 'circuito' ? '<div class="bombillo-fx" aria-hidden="true"></div>' : ''}</div>`;
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><p class="t-nota">Toca una pieza y luego su lugar.</p><div class="fichas piezas">${piezas.map(x => `<button class="ficha pieza" data-pieza="${x.id}" style="touch-action:none">${CH.ilus('objeto', x.o)}<span>${esc(x.n)}</span></button>`).join('')}</div><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><p class="t-nota">Toca una pieza y luego su lugar.</p><div class="fichas piezas">${piezas.map(x => `<button class="ficha pieza" data-pieza="${x.id}" style="touch-action:none">${CH.ilus('objeto', x.o)}<span>${esc(x.n)}</span></button>`).join('')}</div><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     const poner = (pid, slot) => {
       const j = +slot.dataset.destino, r = ranuras[j], pz = p.piezas.find(x => x.id === pid);
@@ -454,7 +456,7 @@
     function uno() {
       const nd = nodos[k];
       ctx.decir(nd.dice, nd.quien || ctx.quien, nd.exp || 'feliz');
-      ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide || '¿Qué le dices?'))}</p><div class="opciones-col">${nd.ops.map((o, j) => `<button class="opcion dialogo-op" data-i="${j}">${esc(T(o))}</button>`).join('')}</div><div data-acciones class="acciones"></div>`;
+      ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide || '¿Qué le dices?'))}</h2><div class="opciones-col">${nd.ops.map((o, j) => `<button class="opcion dialogo-op" data-i="${j}">${esc(T(o))}</button>`).join('')}</div><div data-acciones class="acciones"></div>`;
       CH.on('[data-i]', 'click', ev => {
         const b = ev.currentTarget, o = nd.ops[+b.dataset.i];
         if (o.ok) {
@@ -474,7 +476,7 @@
   ACT.dibuja = (p, ctx) => {
     const colores = ['#2B211D', '#E85D2A', '#FFB627', '#1F7A5C', '#1F6FA8', '#D9667B', '#5B4BD6'];
     ctx.lienzo.innerHTML = `<div class="dibujo"><canvas width="720" height="720" aria-label="Lienzo de dibujo"></canvas>${p.plantilla ? `<div class="plantilla" aria-hidden="true">${CH.objeto(p.plantilla)}</div>` : ''}</div>`;
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <div class="herramientas" role="toolbar" aria-label="Herramientas de dibujo">${colores.map((c, j) => `<button class="color" style="--c:${c}" data-c="${c}" aria-label="Color ${j + 1}" aria-pressed="${j === 0}"></button>`).join('')}
       <button class="btn-redondo" data-grosor aria-label="Cambiar grosor" aria-pressed="false">${CH.I.lapiz}</button><button class="btn-redondo" data-deshacer aria-label="Deshacer">${CH.I.deshacer}</button></div>
       <div data-acciones class="acciones"><button class="btn btn-primario" data-guardar>Guardar en mi galería</button><button class="btn-texto" data-saltar>Prefiero dibujar en papel</button></div>`;
@@ -505,7 +507,7 @@
   /* Elige: una decisión sin respuestas malas (se guarda). */
   ACT.elige = (p, ctx) => {
     ctx.actor(null, ctx.quien, 'curioso');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><div class="elige">${p.ops.map((o, j) => `<button class="opcion elige-op" data-i="${j}">${o.o ? CH.ilus('objeto', o.o) : ''}<span>${esc(T(o))}</span></button>`).join('')}</div><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><div class="elige">${p.ops.map((o, j) => `<button class="opcion elige-op" data-i="${j}">${o.o ? CH.ilus('objeto', o.o) : ''}<span>${esc(T(o))}</span></button>`).join('')}</div><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     CH.on('[data-i]', 'click', ev => {
       const o = p.ops[+ev.currentTarget.dataset.i];
@@ -522,7 +524,7 @@
   ACT.mision = (p, ctx) => {
     const t = T(CH.E.nivel === 'experto' && p.x ? { t: p.x } : { t: p.t });
     ctx.lienzo.innerHTML = `<div class="mision-c"><span class="chip-act">Misión en casa · con un adulto</span><p class="mision-t">${esc(t)}</p></div>`;
-    ctx.hoja.innerHTML = `<p class="t-nota">La marcas como cumplida en «Lo mío» cuando la hagan.</p><div data-acciones class="acciones"><button class="btn btn-primario" data-ok>¡Acepto la misión!</button></div>`;
+    ctx.hoja.innerHTML = `<p class="t-nota">La marcas como cumplida en «Casillero» cuando la hagan.</p><div data-acciones class="acciones"><button class="btn btn-primario" data-ok>¡Acepto la misión!</button></div>`;
     CH.hablar({ t: 'Tu misión en casa: ' + t });
     CH.on('[data-ok]', 'click', () => { if (!(ctx.ep.id in CH.E.misiones)) CH.E.misiones[ctx.ep.id] = false; CH.guardar(); CH.sonido('estrella'); ctx.terminar(); }, ctx.hoja);
   };
@@ -533,7 +535,7 @@
     const reg = CH.E.bitacora.find(r => r.fecha === hoy) || { fecha: hoy, bolsas: 0, botellas: 0, luces: 0 };
     const campos = [['bolsas', 'Bolsas de basura que salieron hoy', 'bolsa'], ['botellas', 'Botellas o envases que se botaron', 'botella'], ['luces', 'Luces prendidas en cuartos vacíos', 'bombillo']];
     ctx.actor(p.pide, ctx.quien, 'feliz');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><div class="contadores">${campos.map(([k, n, o]) => `<div class="contador-f"><span class="ci">${CH.ilus('objeto', o)}</span><span class="cn">${n}</span><div class="paso-c"><button class="btn-redondo" data-menos="${k}" aria-label="Menos ${n}">−</button><output data-out="${k}" aria-live="polite">${reg[k]}</output><button class="btn-redondo" data-mas="${k}" aria-label="Más ${n}">+</button></div></div>`).join('')}</div>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><div class="contadores">${campos.map(([k, n, o]) => `<div class="contador-f"><span class="ci">${CH.ilus('objeto', o)}</span><span class="cn">${n}</span><div class="paso-c"><button class="btn-redondo" data-menos="${k}" aria-label="Menos ${n}">−</button><output data-out="${k}" aria-live="polite">${reg[k]}</output><button class="btn-redondo" data-mas="${k}" aria-label="Más ${n}">+</button></div></div>`).join('')}</div>
       <div data-acciones class="acciones"><button class="btn btn-primario" data-ok>Guardar el día</button></div>`;
     CH.hablar(p.pide);
     const cambia = (k, d) => { reg[k] = Math.max(0, Math.min(30, reg[k] + d)); ctx.hoja.querySelector(`[data-out="${k}"]`).textContent = reg[k]; CH.sonido('toque'); };
@@ -560,7 +562,7 @@
     let color = '#5B4BD6', icono = 'bolsa';
     const pintar = () => { ctx.lienzo.innerHTML = `<div class="revela">${CH.infografiaHTML(color, icono)}</div>`; };
     pintar();
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p>
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2>
       <div class="herramientas" role="group" aria-label="Color">${['#5B4BD6', '#1F7A5C', '#E85D2A', '#1F6FA8'].map((c, j) => `<button class="color" style="--c:${c}" data-c="${c}" aria-label="Color ${j + 1}" aria-pressed="${j === 0}"></button>`).join('')}</div>
       <div class="herramientas" role="group" aria-label="Qué mostrar">${[['bolsa', 'Bolsas'], ['botella', 'Botellas'], ['bombillo', 'Luces']].map(([o, n], j) => `<button class="chip" data-o="${o}" aria-pressed="${j === 0}">${n}</button>`).join('')}</div>
       <div data-acciones class="acciones"></div>`;
@@ -575,14 +577,14 @@
     const J = CH.JUEGOS && CH.JUEGOS[p.juego];
     if (J) { J.jugar({ nivel: p.nivel || 1, dentro: ctx }); return; }
     ctx.actor({ t: 'Aquí va el minijuego. ¡Lo estamos terminando!' }, 'cocuyo', 'pensando');
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">Minijuego en construcción</p><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">Minijuego en construcción</h2><div data-acciones class="acciones"></div>`;
     ctx.seguir(ctx.terminar, { auto: false });
   };
 
   /* Cartel del invento (Plaza). */
   ACT.cartel = (p, ctx) => {
     ctx.lienzo.innerHTML = `<div class="revela">${CH.cartelHTML()}</div>`;
-    ctx.hoja.innerHTML = `<p class="hoja-titulo">${esc(T(p.pide))}</p><div data-acciones class="acciones"></div>`;
+    ctx.hoja.innerHTML = `<h2 class="hoja-titulo">${esc(T(p.pide))}</h2><div data-acciones class="acciones"></div>`;
     CH.hablar(p.pide);
     ctx.seguir(ctx.terminar, { texto: '¡A la feria!', auto: false });
   };

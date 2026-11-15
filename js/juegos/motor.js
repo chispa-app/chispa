@@ -126,7 +126,7 @@
       ctrl.innerHTML = '';
       const m = hoja.querySelector('[data-msg]'); if (m) m.remove();
       const fin = document.createElement('div'); fin.className = 'jg-fin'; fin.setAttribute('role', 'status');
-      fin.innerHTML = `${CH.estrellasHTML(estrellas)}<p class="hoja-titulo">${esc(tit)}</p>${resumen ? `<p>${esc(resumen)}</p>` : ''}${consejo ? `<p class="t-nota">${esc(consejo)}</p>` : ''}
+      fin.innerHTML = `${CH.estrellasHTML(estrellas)}<h2 class="hoja-titulo">${esc(tit)}</h2>${resumen ? `<p>${esc(resumen)}</p>` : ''}${consejo ? `<p class="t-nota">${esc(consejo)}</p>` : ''}
         ${cromo ? `<p class="jg-cromo">${I.estrella}<span>¡Ganaste el cromo «${esc(def.info.nombre)}»! Ya está en tu álbum.</span></p>` : ''}
         ${dentro && n < NIVELES ? `<p class="t-nota">Hay ${NIVELES} niveles. Los demás los juegas desde la zona ${esc(Z.nombre)}.</p>` : ''}`;
       ctrl.before(fin);
