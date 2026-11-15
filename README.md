@@ -2,12 +2,27 @@
 
 App web progresiva (PWA) para niños de 8 a 12 años sobre tecnología verde en su barrio.
 
-## Versión 2.0
+## Versión 2
 - **El barrio es el mundo:** 8 zonas (Casa, Cuadra, Arroyo, Ciénaga, Techos, Parque, Colegio y Plaza), cada una con su color, su vecino y su ruta.
 - **33 episodios** armados con 11 tipos de actividad: escena, busca y toca, arrastra, ordena, verdad o mito, une, estima, antes y después, construye, conversación y dibuja.
 - **Lo que hace volver:** álbum de 60 cromos, reto de 14 días sin rachas que se pierden, un manglar que crece con los días reales y un casillero con accesorios.
 - **Dos niveles:** Explorador (8 a 10 años) y Experto (11 a 12).
 - **Para adultos:** rincón de la familia, modo aula con 8 sesiones y vista horizontal para proyector, ajustes y fuentes.
+
+## Minijuegos (2.1)
+Siete juegos de 8 niveles con 3 estrellas. El nivel 1 se juega dentro de un episodio; desde ahí el juego se abre en su zona, y el nivel 8 da un cromo.
+
+| Zona | Juego | Qué se hace | Las estrellas premian |
+|---|---|---|---|
+| Casa | Banda clasificadora | Clasificar lo que llega por una banda; enjuagar lo que se puede salvar; punto especial para pilas, medicinas y aceite | Equivocarse poco |
+| Cuadra | Ruta del reciclador | Llevar a Rosa por la cuadra a recoger las bolsas blancas y descargarlas en la estación (desde el nivel 6, con carrito de capacidad limitada) | La ruta más corta |
+| Arroyo | Atrapa en el arroyo | Sacar la basura que baja por el arroyo y dejar pasar hojas y semillas | Tocar solo la basura |
+| Ciénaga | Manglar vivo | Sembrar cada mangle en su franja y devolver a cada animal a su lugar; sacar la basura | Equivocarse poco |
+| Techos | Red del barrio | Girar cables para llevar la energía del panel (y del molino) a todas las casas | Girar poco |
+| Parque | Sombra para todos | Sembrar árboles que den sombra a bancas, paradero, juegos y camino al colegio, lejos de los cables | Usar pocos árboles |
+| Colegio | Detective de datos | Leer pictogramas, encontrar la gráfica tramposa, ver qué le falta a una gráfica y armar una | Equivocarse poco |
+
+Ningún juego tiene tiempo límite. En el arroyo lo que se mueve se puede pausar, se detiene solo cuando una cosa tiene el foco del teclado y la basura que no se alcanza queda atascada en la reja. Con «Juegos sin tiempo» o «Menos movimiento», todo queda quieto. Cada juego se puede jugar con toques, con el teclado o arrastrando.
 
 ## Principios
 - Sin cuentas, sin datos personales, sin publicidad ni notificaciones (Ley 1581 de 2012): todo se guarda solo en el aparato.
@@ -18,6 +33,7 @@ App web progresiva (PWA) para niños de 8 a 12 años sobre tecnología verde en 
 ## Estructura
 - `js/datos/`: zonas, fuentes, rutas y extras (reto, cromos, aula).
 - `js/nucleo.js`: estado, voz, sonidos, imágenes y progreso. `js/actividades.js`: motor de episodios. `js/pantallas.js`: pantallas.
+- `js/juegos/`: `motor.js` (niveles, estrellas, pausa y pantalla de niveles) y un archivo por juego.
 - `img/`: ilustraciones SVG. Después de agregar imágenes o voces, ejecutar `node herramientas/inventario.js`.
 
 Tipografías: Bricolage Grotesque y Lexend (SIL Open Font License). Ilustraciones generadas con la IA de Figma y editadas a mano.

@@ -35,6 +35,7 @@
   CH.picto = picto;
   const fuente = k => { const f = CH.F[k]; return f ? `<p class="fuente">Fuente: ${esc(f.nombre)}</p>` : ''; };
   CH.fuenteHTML = fuente;
+  CH.canecaHTML = caneca;
 
   // Arrastre opcional con puntero: el toque siempre funciona aparte.
   function arrastrable(el, alSoltar) {
@@ -69,6 +70,7 @@
     el.addEventListener('pointerup', fin);
     el.addEventListener('pointercancel', () => { if (fantasma) { fantasma.remove(); fantasma = null; el.classList.remove('levantado'); } inicio = null; });
   }
+  CH.arrastrable = arrastrable;
 
   /* =========================================================
      MOTOR DEL EPISODIO

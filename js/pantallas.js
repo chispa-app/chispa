@@ -10,6 +10,7 @@
     const it = (h, txt, ic, extra = '') => `<a href="#${h}" ${actual === h ? 'aria-current="page"' : ''}>${I[ic]}<span>${txt}</span>${extra}</a>`;
     return `<nav class="nav" aria-label="Secciones">${it('barrio', 'Barrio', 'barrio')}${it('album', 'Álbum', 'album', n ? `<b class="insignia" aria-label="${n} cromos nuevos">${n}</b>` : '')}${it('reto', 'Reto', 'reto')}${it('casillero', 'Casillero', 'casillero')}</nav>`;
   };
+  CH.nav = nav;
   const estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} estrellas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
 
   /* ================= APERTURA ================= */
@@ -103,7 +104,11 @@
         <div class="crece"><b>${esc(ep.titulo)}</b>${hecho ? estrellasHTML(hecho.estrellas) : `<span class="t-nota">${abierto ? 'Listo para jugar' : 'Se abre al terminar el anterior'}</span>`}${ep.dorado ? '<span class="dorado-et">Cromo dorado</span>' : ''}</div>
         ${abierto ? `<a class="btn ${hecho ? 'btn-borde' : 'btn-primario'} btn-chico" href="#ep/${ep.id}" aria-label="${hecho ? 'Repetir' : 'Jugar'}: ${esc(ep.titulo)}">${hecho ? 'Repetir' : 'Jugar'}</a>` : ''}</li>`;
     }).join('');
-    const juego = J ? `<section class="tarjeta juego-t"><div class="crece"><span class="t-nota">Minijuego</span><b>${esc(J.nombre)}</b></div>${CH.JUEGOS && CH.JUEGOS[J.id] ? `<a class="btn btn-oscuro btn-chico" href="#juego/${J.id}">Jugar</a>` : '<span class="t-nota">Muy pronto</span>'}</section>` : '';
+    const juego = J && CH.JUEGOS && CH.JUEGOS[J.id] ? (() => {
+      const abierto = P.juegoAbierto(J.id), epJ = CH.epDeJuego(J.id), est = P.estrellasDe(J.id);
+      const nota = abierto ? `${est} de 24 estrellas` : `Se abre en el episodio ${ruta.indexOf(epJ) + 1}`;
+      return `<section class="tarjeta juego-t ${abierto ? '' : 'cerrado'}"><span class="juego-ico" aria-hidden="true">${CH.ilus('objeto', J.o)}</span><div class="crece"><span class="t-nota">Minijuego · 8 niveles</span><b>${esc(J.nombre)}</b><span class="t-nota">${nota}</span></div>${abierto ? `<a class="btn btn-oscuro btn-chico" href="#juego/${J.id}" aria-label="Jugar ${esc(J.nombre)}">Jugar</a>` : `<span class="candado-j" aria-hidden="true">${I.candado}</span>`}</section>`;
+    })() : '';
     CH.pintar(`<div class="pantalla zona-p" style="--z:${z.color};--zt:${z.tinta}">
       <header class="zona-cab"><a class="btn-redondo" href="#barrio" aria-label="Volver al barrio">${I.atras}</a>
         <div class="crece"><span class="zona-et-c">${esc(z.nombre)}</span><h1 class="t-titulo">${esc(z.tema)}</h1></div></header>
@@ -163,6 +168,7 @@
     return `<span class="cromo-cara" style="--c:${color};--t:${tinta}"><span class="cromo-cab">${esc(z ? z.nombre : 'Reto')} · ${n} de 60</span><span class="cromo-marco">${arte}</span><span class="cromo-nombre">${esc(c.t)}</span></span>
       <span class="cromo-dorso" style="--c:${color}"><span>${esc(c.dato)}</span>${c.f && CH.F[c.f] ? `<small>Fuente: ${esc(CH.F[c.f].nombre)}</small>` : ''}</span>`;
   }
+  CH.cromoHTML = cromoHTML;
   S.album = () => {
     const todos = CH.cromos(), nuevos = CH.E.nuevos.slice();
     const grupos = [...CH.ZONAS.map(z => ({ id: z.id, n: z.nombre, c: z.color })), { id: 'reto', n: 'Reto de 14 días', c: '#FFB627' }];
@@ -324,7 +330,7 @@
     CH.pintar(`<div class="pantalla adultos">
       <div class="barra"><a class="btn-redondo" href="#barrio" aria-label="Volver al barrio">${I.atras}</a><div class="crece"><h1 class="t-titulo">Para adultos</h1><span class="t-nota">Familias y docentes</span></div></div>
       <nav class="indice-chips" aria-label="Secciones">${[['progreso', 'Progreso'], ['ajustes', 'Ajustes'], ['familia', 'Familia'], ['aula', 'Modo aula'], ['aprende', 'Qué aprende'], ['privacidad', 'Privacidad'], ['fuentes', 'Fuentes']].map(([h, t]) => `<a class="chip" href="#adultos" data-ir="${h}">${t}</a>`).join('')}</nav>
-      <section id="s-progreso" class="tarjeta"><h2>Progreso</h2><div class="stats"><div><b>${P.zonasEncendidas()} de 8</b><span>zonas encendidas</span></div><div><b>${Object.keys(CH.E.eps).length} de 33</b><span>episodios</span></div><div><b>${CH.E.cromos.length}</b><span>cromos</span></div><div><b>${Object.keys(CH.E.reto).length} de 14</b><span>días del reto</span></div></div></section>
+      <section id="s-progreso" class="tarjeta"><h2>Progreso</h2><div class="stats"><div><b>${P.zonasEncendidas()} de 8</b><span>zonas encendidas</span></div><div><b>${Object.keys(CH.E.eps).length} de 33</b><span>episodios</span></div><div><b>${CH.E.cromos.length}</b><span>cromos</span></div><div><b>${Object.keys(CH.E.reto).length} de 14</b><span>días del reto</span></div><div><b>${P.nivelesSuperados ? P.nivelesSuperados() : 0} de 56</b><span>niveles de minijuegos</span></div><div><b>${P.estrellas()}</b><span>estrellas en total</span></div></div></section>
       <section id="s-ajustes"><h2>Ajustes</h2><div class="lista-ajustes">
         ${sw('voz', 'Voz de Cocuyo y sonidos')}${sw('vozLenta', 'Voz más lenta')}${sw('letra', 'Letra más grande')}${sw('movimiento', 'Menos movimiento')}${sw('sinTiempo', 'Juegos sin tiempo', 'Los minijuegos esperan sin apurar.')}
         <div class="ajuste"><span><b id="aj-lim">Episodios nuevos por día</b><small>Después, Cocuyo propone descansar.</small></span><div class="paso-c"><button class="btn-redondo" data-lim="-1" aria-label="Menos">−</button><output aria-labelledby="aj-lim">${aj.limite}</output><button class="btn-redondo" data-lim="1" aria-label="Más">+</button></div></div>
