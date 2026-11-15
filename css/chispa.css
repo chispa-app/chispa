@@ -733,6 +733,8 @@ section > .t-sub + .t-nota { margin-top: calc(var(--e1) * -1); }
 .acc small { font-weight: 500; color: var(--carbon-suave); font-size: var(--f-mini); }
 .acc.cerrado { background: var(--papel-2); border: 2px dashed #D9C8AD; box-shadow: none; color: var(--carbon-suave); }
 .acc.cerrado .ilus, .acc.cerrado svg { opacity: .45; filter: grayscale(.6); }
+.acc img.ilus-accesorio { width: 72px; height: 72px; margin: -4px 0 2px; filter: drop-shadow(0 4px 4px rgba(43,33,29,.22)); }
+.acc.cerrado img.ilus-accesorio { opacity: .5; filter: grayscale(1) contrast(.85); }
 .acc[aria-pressed="true"] { background: var(--crema); box-shadow: var(--sombra-dura-s), var(--anillo-sel); }
 .lista-misiones { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--e3); }
 .lista-misiones .tarjeta .btn { align-self: flex-start; }

@@ -139,7 +139,8 @@
     mapa: () => 'img/fondos/barrio.webp',
     zona: id => `img/zonas/${id}.webp`,
     escena: id => `img/escenas/${id}.svg`,
-    objeto: id => `img/objetos/${id}.svg`
+    objeto: id => `img/objetos/${id}.svg`,
+    accesorio: id => `img/accesorios/acc-${id}.webp`
   };
   const COC_VIEJO = { celebrando: 'bien', saludando: 'hola', feliz: 'bien', curioso: 'idea', sorprendido: 'casi', pensando: 'pensando', senalando: 'idea', dormido: 'descansa' };
   CH.hayImagen = (tipo, id) => HAY.has(RUTA[tipo](id));
