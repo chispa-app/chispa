@@ -97,7 +97,7 @@
         <span class="btn btn-primario btn-chico" aria-hidden="true">${P.algunEpisodio() ? 'Seguir' : 'Empezar'}${I.flecha}</span></a>`; })()
       : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Juega los minijuegos o completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
     // Cocuyo espera sobre la avenida, a la altura de la zona sugerida.
-    const cy = zs ? Math.max(4, zs.mapa.y - 15) : 4;
+    const cy = zs ? Math.max(4, zs.mapa.y - 14) : 4, cx = zs ? zs.mapa.x + (zs.mapa.x < 50 ? 13 : -13) : 50;
     CH.pintar(`<div class="pantalla-mapa">
       <header class="barra-mapa">
         <a class="mi-inventor" href="#casillero" aria-label="Mi casillero">${CH.avatar(CH.E.avatar, 'av-mini')}</a>
@@ -108,7 +108,7 @@
       <h1 class="solo-lector">Tu barrio: ${enc} de 8 zonas encendidas</h1>
       <div class="mapa" role="group" aria-label="Mapa del barrio">
         <div class="mapa-img" aria-hidden="true">${mapaSVG || (CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false))}</div>
-        <span class="coc-mapa-pos" style="top:${cy}%" aria-hidden="true">${CH.cocuyo('feliz', 'coc-mapa')}</span>
+        <span class="coc-mapa-pos" style="top:${cy}%;left:${cx}%" aria-hidden="true">${CH.cocuyo('feliz', 'coc-mapa')}</span>
         ${zonas}
       </div>
       <div class="flota-abajo">${tarjeta}</div>

@@ -4,14 +4,14 @@
 window.CH = window.CH || {};
 
 CH.ZONAS = [
-  { id: 'casa', nombre: 'Casa', tema: 'Separar en la fuente', color: '#D9667B', tinta: '#2B211D', quien: 'familia', quienNombre: 'Tu familia', juego: 'banda', mapa: { x: 20.7, y: 29.4 } },
-  { id: 'cuadra', nombre: 'Cuadra', tema: 'El viaje de la basura', color: '#E85D2A', tinta: '#2B211D', quien: 'rosa', quienNombre: 'Rosa, recicladora de oficio', juego: 'reciclador', mapa: { x: 79.3, y: 29.4 } },
-  { id: 'arroyo', nombre: 'Arroyo', tema: 'Agua de lluvia y basura que tapa', color: '#1F6FA8', tinta: '#FFFFFF', quien: 'lina', quienNombre: 'Lina, que mide la lluvia', juego: 'arroyo', mapa: { x: 20.7, y: 48.4 } },
-  { id: 'cienaga', nombre: 'Ciénaga', tema: 'Manglar y biodiversidad', color: '#0F7B70', tinta: '#FFFFFF', quien: 'tomas', quienNombre: 'Tomás, pescador', juego: 'manglar', mapa: { x: 79.3, y: 48.4 } },
-  { id: 'techos', nombre: 'Techos', tema: 'Energía del sol y del viento', color: '#FFB627', tinta: '#2B211D', quien: 'vale', quienNombre: 'Vale, técnica solar', juego: 'red', mapa: { x: 20.7, y: 67.4 } },
-  { id: 'parque', nombre: 'Parque', tema: 'Calor, sombra y árboles', color: '#1F7A5C', tinta: '#FFFFFF', quien: 'don-abel', quienNombre: 'Don Abel, jardinero', juego: 'sombra', mapa: { x: 79.3, y: 67.4 } },
-  { id: 'colegio', nombre: 'Colegio', tema: 'Detectives de datos', color: '#5B4BD6', tinta: '#FFFFFF', quien: 'seno-ines', quienNombre: 'La seño Inés', juego: 'detective', mapa: { x: 20.7, y: 86.4 } },
-  { id: 'plaza', nombre: 'Plaza', tema: 'Taller de inventores', color: '#3A2E3F', tinta: '#FFFFFF', quien: 'cocuyo', quienNombre: 'Cocuyo', juego: 'taller', mapa: { x: 79.3, y: 86.4 } }
+  { id: 'casa', nombre: 'Casa', tema: 'Separar en la fuente', color: '#D9667B', tinta: '#2B211D', quien: 'familia', quienNombre: 'Tu familia', juego: 'banda', mapa: { x: 19.7, y: 31.3 } },
+  { id: 'cuadra', nombre: 'Cuadra', tema: 'El viaje de la basura', color: '#E85D2A', tinta: '#2B211D', quien: 'rosa', quienNombre: 'Rosa, recicladora de oficio', juego: 'reciclador', mapa: { x: 80.3, y: 31.3 } },
+  { id: 'arroyo', nombre: 'Arroyo', tema: 'Agua de lluvia y basura que tapa', color: '#1F6FA8', tinta: '#FFFFFF', quien: 'lina', quienNombre: 'Lina, que mide la lluvia', juego: 'arroyo', mapa: { x: 14.6, y: 58.5 } },
+  { id: 'cienaga', nombre: 'Ciénaga', tema: 'Manglar y biodiversidad', color: '#0F7B70', tinta: '#FFFFFF', quien: 'tomas', quienNombre: 'Tomás, pescador', juego: 'manglar', mapa: { x: 85.4, y: 58.5 } },
+  { id: 'techos', nombre: 'Techos', tema: 'Energía del sol y del viento', color: '#FFB627', tinta: '#2B211D', quien: 'vale', quienNombre: 'Vale, técnica solar', juego: 'red', mapa: { x: 21.0, y: 74.1 } },
+  { id: 'parque', nombre: 'Parque', tema: 'Calor, sombra y árboles', color: '#1F7A5C', tinta: '#FFFFFF', quien: 'don-abel', quienNombre: 'Don Abel, jardinero', juego: 'sombra', mapa: { x: 77.1, y: 74.1 } },
+  { id: 'colegio', nombre: 'Colegio', tema: 'Detectives de datos', color: '#5B4BD6', tinta: '#FFFFFF', quien: 'seno-ines', quienNombre: 'La seño Inés', juego: 'detective', mapa: { x: 18.6, y: 93.5 } },
+  { id: 'plaza', nombre: 'Plaza', tema: 'Taller de inventores', color: '#3A2E3F', tinta: '#FFFFFF', quien: 'cocuyo', quienNombre: 'Cocuyo', juego: 'taller', mapa: { x: 81.4, y: 93.5 } }
 ];
 
 CH.PERSONAJES = {
