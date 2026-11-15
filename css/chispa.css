@@ -1028,3 +1028,5 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 /* Héroes de zona y de minijuego: de la rodilla para arriba. */
 .zona-heroe .zona-quien[src$=".webp"] { width: auto; height: 118%; bottom: -36%; filter: drop-shadow(0 8px 12px rgba(43,33,29,.3)); }
 .zona-heroe:has(.vista) .zona-quien[src$=".webp"] { right: 4%; width: auto; height: 118%; bottom: -36%; }
+/* Cocuyo es pequeño: se ve casi entero, a su escala junto a los vecinos. */
+.actor-cuerpo img.actor-fig.cocuyo[src$=".webp"] { height: min(80cqh, 70vw, 340px); margin-bottom: -6cqh; filter: drop-shadow(0 0 18px rgba(255,214,77,.45)) drop-shadow(0 10px 14px rgba(43,33,29,.25)); }

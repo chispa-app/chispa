@@ -128,7 +128,7 @@
           let r = hoja.querySelector('.resp');
           if (!r) { r = document.createElement('div'); hoja.prepend(r); }
           r.className = 'resp ' + (bien ? 'bien' : 'casi');
-          r.innerHTML = `${CH.cocuyo(bien ? 'feliz' : 'pensando', 'mini')}<div><p class="titulo">${esc(titulo)}</p>${texto ? `<p>${esc(texto)}</p>` : ''}${extra}</div>`;
+          r.innerHTML = `${CH.cocuyo(bien ? (CH.hayImagen('cocuyo', 'pulgar') ? 'pulgar' : 'feliz') : 'pensando', 'mini')}<div><p class="titulo">${esc(titulo)}</p>${texto ? `<p>${esc(texto)}</p>` : ''}${extra}</div>`;
           CH.anunciar(titulo + '. ' + (texto || ''));
           return r;
         },

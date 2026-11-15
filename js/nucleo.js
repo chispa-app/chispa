@@ -129,7 +129,7 @@
   // js/imagenes.js lista los archivos que existen. Si falta uno, se dibuja un respaldo.
   const HAY = new Set(window.IMAGENES || []);
   const RUTA = {
-    cocuyo: id => `img/cocuyo/cocuyo-${id}.svg`,
+    cocuyo: id => HAY.has(`img/cocuyo/cocuyo-${id}.webp`) ? `img/cocuyo/cocuyo-${id}.webp` : `img/cocuyo/cocuyo-${id}.svg`,
     // Personajes en 3D (WebP con transparencia) si existen; si no, el dibujo SVG anterior.
     personaje: id => HAY.has(`img/personajes/personaje-${id}.webp`) ? `img/personajes/personaje-${id}.webp` : `img/personajes/personaje-${id}.svg`,
     cara: id => `img/personajes/personaje-${id}-cara.webp`,
