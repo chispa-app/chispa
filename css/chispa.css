@@ -238,7 +238,7 @@ p { margin: 0; text-wrap: pretty; }
 .zona-heroe .zona-fondo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
 .zona-heroe .zona-quien { position: absolute; bottom: -6%; left: 50%; transform: translateX(-50%); width: 42%; }
 .zona-heroe .respaldo-persona { width: 30%; }
-.zona-heroe .vista { object-position: center 45%; }
+.zona-heroe .vista, .seccion-arte .vista, .album-banda .vista { object-position: center; }
 /* Sobre la vista del barrio, el personaje se para a un lado para dejar ver su lugar. */
 .zona-heroe:has(.vista) .zona-quien { left: auto; right: 2%; transform: none; width: 36%; bottom: -4%; filter: drop-shadow(0 6px 10px rgba(43, 33, 29, .35)); }
 .zona-p > .t-nota { margin-top: calc(var(--e2) * -1); }
