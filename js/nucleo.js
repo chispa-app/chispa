@@ -132,7 +132,7 @@
     cocuyo: id => `img/cocuyo/cocuyo-${id}.svg`,
     personaje: id => `img/personajes/personaje-${id}.svg`,
     avatar: id => `img/avatares/avatar-${id}.svg`,
-    fondo: id => `img/fondos/fondo-${id}.svg`,
+    fondo: id => `img/fondos/fondo-${id}.webp`,
     mapa: () => 'img/fondos/barrio.webp',
     zona: id => `img/zonas/${id}.webp`,
     escena: id => `img/escenas/${id}.svg`,
