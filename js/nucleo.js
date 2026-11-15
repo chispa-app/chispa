@@ -133,7 +133,8 @@
     // Personajes en 3D (WebP con transparencia) si existen; si no, el dibujo SVG anterior.
     personaje: id => HAY.has(`img/personajes/personaje-${id}.webp`) ? `img/personajes/personaje-${id}.webp` : `img/personajes/personaje-${id}.svg`,
     cara: id => `img/personajes/personaje-${id}-cara.webp`,
-    avatar: id => `img/avatares/avatar-${id}.svg`,
+    // Avatares en 3D: en la app se ven de cabeza y hombros (la figura entera queda en avatar-<id>.webp).
+    avatar: id => HAY.has(`img/avatares/avatar-${id}-cara.webp`) ? `img/avatares/avatar-${id}-cara.webp` : `img/avatares/avatar-${id}.svg`,
     fondo: id => `img/fondos/fondo-${id}.webp`,
     mapa: () => 'img/fondos/barrio.webp',
     zona: id => `img/zonas/${id}.webp`,
