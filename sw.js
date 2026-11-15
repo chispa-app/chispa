@@ -1,6 +1,6 @@
 /* chispa · service worker: guarda la app y sus ilustraciones para que abra sin internet. No envía nada a ningún lado. */
 'use strict';
-const VERSION = 'chispa-v2.4.2';
+const VERSION = 'chispa-v2.5';
 const VOZ = 'chispa-voz-1';
 importScripts('js/imagenes.js', 'js/audios.js');
 const NUCLEO = ['./', './index.html', './manifest.webmanifest', './css/chispa.css',

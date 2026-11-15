@@ -130,7 +130,9 @@
   const HAY = new Set(window.IMAGENES || []);
   const RUTA = {
     cocuyo: id => `img/cocuyo/cocuyo-${id}.svg`,
-    personaje: id => `img/personajes/personaje-${id}.svg`,
+    // Personajes en 3D (WebP con transparencia) si existen; si no, el dibujo SVG anterior.
+    personaje: id => HAY.has(`img/personajes/personaje-${id}.webp`) ? `img/personajes/personaje-${id}.webp` : `img/personajes/personaje-${id}.svg`,
+    cara: id => `img/personajes/personaje-${id}-cara.webp`,
     avatar: id => `img/avatares/avatar-${id}.svg`,
     fondo: id => `img/fondos/fondo-${id}.webp`,
     mapa: () => 'img/fondos/barrio.webp',
@@ -160,6 +162,8 @@
   CH.objeto = id => (CH.ICO && CH.ICO[id]) || A.obj[id] || `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="#FFF0D6" stroke="#5A3526" stroke-width="2.5"/></svg>`;
   CH.cocuyo = (exp, cls = '', alt = '') => CH.ilus('cocuyo', exp, { cls: 'cocuyo ' + cls, alt });
   CH.personaje = (id, cls = '', alt = '') => id === 'cocuyo' ? CH.cocuyo('saludando', cls, alt) : CH.ilus('personaje', id, { cls: 'personaje ' + cls, alt });
+  // Cara del personaje (cabeza y hombros) para círculos y tarjetas pequeñas.
+  CH.cara = (id, cls = '', alt = '') => id !== 'cocuyo' && CH.hayImagen('cara', id) ? CH.ilus('cara', id, { cls: 'personaje ' + cls, alt }) : CH.personaje(id, cls, alt);
   CH.avatar = (id, cls = '', alt = '') => CH.ilus('avatar', id, { cls: 'avatar ' + cls, alt });
   CH.fondo = (id, cls = '') => CH.ilus('fondo', id, { cls });
   // Vista aérea de la zona, recortada de la ilustración del barrio; si falta, el fondo de la zona.

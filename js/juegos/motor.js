@@ -12,7 +12,7 @@
   CH.semilla = s => { let x = (s >>> 0) || 1; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 4294967296; }; };
   CH.mezclarCon = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   CH.estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} chispas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
-  const cara = quien => `<span class="jg-cara" aria-hidden="true">${quien === 'cocuyo' ? CH.cocuyo('feliz', 'jg-cara-img') : CH.personaje(quien, 'jg-cara-img')}</span>`;
+  const cara = quien => `<span class="jg-cara" aria-hidden="true">${quien === 'cocuyo' ? CH.cocuyo('feliz', 'jg-cara-img') : CH.cara(quien, 'jg-cara-img')}</span>`;
   CH.caraHTML = cara;
 
   /* ---------- Progreso de los juegos ---------- */

@@ -81,7 +81,7 @@
       return `<a class="zona-bloque ${e}" href="${e === 'cerrada' ? '#barrio' : '#zona/' + z.id}" ${e === 'cerrada' ? 'data-cerrada="' + z.id + '"' : ''} tabindex="-1" aria-hidden="true" style="left:${x0}%;top:${y0}%;width:${x1 - x0}%;height:${y1 - y0}%"></a>`; }).join('');
     const zs = sug && CH.zona(sug.zona);
     const tarjeta = sug ? (() => { const i = CH.RUTAS[sug.zona].indexOf(sug.ep) + 1; return `<a class="seguir-tarjeta" href="#ep/${sug.ep.id}" style="--z:${zs.color};--zt:${zs.tinta}">
-        <span class="seguir-cara" aria-hidden="true">${zs.quien === 'cocuyo' || zs.quien === 'familia' ? CH.cocuyo('feliz') : CH.personaje(zs.quien)}</span>
+        <span class="seguir-cara" aria-hidden="true">${zs.quien === 'cocuyo' || zs.quien === 'familia' ? CH.cocuyo('feliz') : CH.cara(zs.quien)}</span>
         <span class="crece"><span class="seguir-zona">${esc(zs.nombre)} · episodio ${i} de ${P.total(sug.zona)}</span><b>${esc(sug.ep.titulo)}</b></span>
         <span class="btn btn-primario btn-chico" aria-hidden="true">${P.algunEpisodio() ? 'Seguir' : 'Empezar'}${I.flecha}</span></a>`; })()
       : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Juega los minijuegos o completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
@@ -185,7 +185,7 @@
         <span class="estrellas cierre-estrellas" role="img" aria-label="${estrellas} de 3 chispas">${[0, 1, 2].map(k => `<span style="--k:${k}">${k < estrellas ? I.estrella : I.estrellaVacia}</span>`).join('')}</span></div>
       ${cromo ? `<div class="cierre-cromo">${cromoNuevo ? '<span class="cinta-nuevo">¡Cromo nuevo!</span>' : ''}<button class="cromo-t ${cromo.tipo} ${cromoNuevo ? 'aparece' : ''}" data-voltear aria-label="Cromo: ${esc(cromo.t)}. Toca para ver el dato.">${cromoHTML(cromo)}<span class="cromo-brillo" aria-hidden="true"></span></button></div>` : ''}
       ${!fin ? `<div class="cierre-avance"><span class="segmentos" aria-hidden="true">${CH.RUTAS[zona].map(e => `<i class="${CH.E.eps[e.id] ? 'si' : ''}"></i>`).join('')}</span><span>${esc(mayus(z.nombre))} · ${n} de ${t} · ${esc(avance)}</span></div>` : ''}
-      ${sorpresa ? `<p class="aviso-claro">${CH.personaje(sorpresa.p, 'mini-cara')}<span><b>¡Sorpresa!</b> ${esc(sorpresa.dato)} Búscalo en tu mapa.</span></p>` : ''}
+      ${sorpresa ? `<p class="aviso-claro">${CH.cara(sorpresa.p, 'mini-cara')}<span><b>¡Sorpresa!</b> ${esc(sorpresa.dato)} Búscalo en tu mapa.</span></p>` : ''}
       ${plazaNueva ? `<p class="aviso-claro">${CH.cocuyo('senalando', 'mini-cara')}<span>¡Se abrió la Plaza: el taller de inventores!</span></p>` : ''}
       <div class="abajo">${fin ? '<a class="btn btn-primario" href="#diploma">Ver mi diploma</a>' : cromo ? `<a class="btn btn-primario" href="#album/${zona}">${cromoNuevo ? 'Pegar en mi álbum' : 'Ver en mi álbum'}</a>` : `<a class="btn btn-primario" href="#zona/${zona}">Seguir</a>`}<a class="btn btn-claro" href="#barrio">Volver al barrio</a></div>
     </div>`, { clase: 'modo-noche', voz });
@@ -197,7 +197,7 @@
   /* ================= ÁLBUM ================= */
   function cromoHTML(c) {
     const z = CH.zona(c.zona), color = z ? z.color : '#FFB627', tinta = z ? z.tinta : '#2B211D';
-    const arte = c.p ? CH.personaje(c.p, 'cromo-arte') : c.o === 'cocuyo' ? CH.cocuyo('celebrando', 'cromo-arte') : CH.ilus('objeto', c.o || 'estrella', { cls: 'cromo-arte' });
+    const arte = c.p ? CH.cara(c.p, 'cromo-arte') : c.o === 'cocuyo' ? CH.cocuyo('celebrando', 'cromo-arte') : CH.ilus('objeto', c.o || 'estrella', { cls: 'cromo-arte' });
     const n = CH.cromos().findIndex(x => x.id === c.id) + 1;
     if (c.tipo === 'sello') return `<span class="cromo-cara sello-cara"><span class="punto-luz" aria-hidden="true"></span><b>${esc(c.t)}</b></span>
       <span class="cromo-dorso sello-dorso" style="--c:#FFB627"><span>${esc(c.dato)}</span></span>`;
@@ -470,7 +470,7 @@
       <section id="s-privacidad"><h2>Privacidad</h2><p>chispa no tiene cuentas, no pide nombres ni datos personales, no usa ubicación, cámara ni micrófono, no muestra publicidad y no envía nada a internet (Ley 1581 de 2012). El avance, los dibujos y la bitácora se guardan solo en este aparato. No hay notificaciones ni rachas que se pierden.</p>
         <button class="btn btn-borde" data-borrar>Borrar todo el avance</button></section>
       <section id="s-fuentes"><h2>Fuentes de los datos</h2><ul class="lista-fuentes">${[...usadas].filter(k => CH.F[k]).map(k => `<li><a href="${CH.F[k].url}" target="_blank" rel="noopener">${esc(CH.F[k].nombre)}</a></li>`).join('')}</ul></section>
-      <section><h2>Créditos</h2><p>Proyecto académico de Diseño Gráfico. Ilustración del barrio, sus vistas y los fondos de cada zona generados con IA en Adobe Firefly; demás ilustraciones generadas con la IA de Figma y editadas a mano; voces del sistema o de ElevenLabs; investigación, diseño y código con apoyo de Claude (IA). Tipografías Bricolage Grotesque y Lexend (licencia OFL).</p></section>
+      <section><h2>Créditos</h2><p>Proyecto académico de Diseño Gráfico. Ilustración del barrio, sus vistas, los fondos de cada zona y los personajes en 3D generados con IA en Adobe Firefly; demás ilustraciones generadas con la IA de Figma y editadas a mano; voces del sistema o de ElevenLabs; investigación, diseño y código con apoyo de Claude (IA). Tipografías Bricolage Grotesque y Lexend (licencia OFL).</p></section>
     </div>${nav('')}`);
     CH.on('[data-ir]', 'click', ev => { ev.preventDefault(); const s = document.getElementById('s-' + ev.currentTarget.dataset.ir); if (s) { s.scrollIntoView({ behavior: CH.menosMovimiento() ? 'auto' : 'smooth' }); const h = s.querySelector('h2'); h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } });
     CH.on('[data-aj]', 'click', ev => {

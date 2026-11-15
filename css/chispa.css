@@ -1011,3 +1011,20 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 }
 
 /* Maqueta del barrio: en las zonas encendidas se prenden las ventanas; el molino gira */
+
+/* ---------- Personajes en 3D (2.5) ---------- */
+/* Caras recortadas: llenan su círculo o tarjeta. */
+.seguir-cara img[src$="-cara.webp"], .jg-cara img[src$="-cara.webp"] { top: 0; width: 100%; height: 100%; object-fit: cover; }
+.mini-cara[src$="-cara.webp"] { border-radius: 50%; background: color-mix(in srgb, var(--z, var(--ambar)) 30%, #FFF); }
+.cromo-marco img.cromo-arte[src$="-cara.webp"] { width: 86%; border-radius: var(--r-m); }
+/* Cuerpo entero: se mide por la altura (la figura es alta y angosta). */
+.personaje.grande[src$=".webp"] { width: auto; height: 300px; }
+.vecino:has(img[src$=".webp"]) { width: max-content; top: 10px; }
+.vecino img[src$=".webp"] { width: auto; height: 70px; filter: drop-shadow(0 3px 3px rgba(43,33,29,.35)); }
+/* Episodio en plano medio: el personaje llena el lienzo y sus piernas pasan detrás de la hoja. */
+.ep-lienzo { container-type: size; }
+.actor-cuerpo:has(img[src$=".webp"]) { width: auto; max-width: 52%; margin-bottom: 0; display: flex; justify-content: center; }
+.actor-cuerpo img.actor-fig[src$=".webp"] { width: auto; max-width: none; height: 118cqh; max-height: 560px; margin-bottom: -26cqh; filter: drop-shadow(0 10px 14px rgba(43,33,29,.28)); }
+/* Héroes de zona y de minijuego: de la rodilla para arriba. */
+.zona-heroe .zona-quien[src$=".webp"] { width: auto; height: 118%; bottom: -36%; filter: drop-shadow(0 8px 12px rgba(43,33,29,.3)); }
+.zona-heroe:has(.vista) .zona-quien[src$=".webp"] { right: 4%; width: auto; height: 118%; bottom: -36%; }
