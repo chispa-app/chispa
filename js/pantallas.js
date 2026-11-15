@@ -63,22 +63,8 @@
       ${CH.ZONAS.map(z => `<g transform="translate(${z.mapa.x * 10.24} ${z.mapa.y * 15.36})"><ellipse rx="170" ry="120" fill="${z.color}" opacity=".28"/><ellipse rx="120" ry="80" fill="${z.color}" stroke="#5A3526" stroke-width="6"/></g>`).join('')}
     </svg>`;
   }
-  // El mapa va en línea (no como <img>) para encender cada zona y los faroles según el avance.
-  let mapaSVG = null;
-  const cargarMapa = () => mapaSVG ? Promise.resolve(mapaSVG) : !CH.hayImagen('mapa', '') ? Promise.resolve(null)
-    : fetch('img/fondos/mapa-barrio.svg').then(r => r.ok ? r.text() : null).then(t => { mapaSVG = t; return t; }).catch(() => null);
+  // El mapa es una ilustración; cada manzana lleva encima un velo que la apaga o la enciende según el avance.
   const estadoZona = id => P.completa(id) ? 'completa' : !P.abierta(id) ? 'cerrada' : P.cuantos(id) ? 'encendida' : 'abierta';
-  function encenderMapa(raiz) {
-    const svg = raiz && raiz.querySelector('svg'); if (!svg) return;
-    CH.ZONAS.forEach(z => {
-      const g = svg.querySelector('#z-' + z.id); if (!g) return;
-      const e = estadoZona(z.id);
-      g.setAttribute('class', 'zona-arte ' + e);
-      if (e === 'cerrada') g.setAttribute('filter', 'url(#f-apagado)'); else if (e === 'abierta') g.setAttribute('filter', 'url(#f-tenue)'); else g.removeAttribute('filter');
-    });
-    const faroles = [...svg.querySelectorAll('.farol')], n = Math.round(P.zonasEncendidas() / 8 * faroles.length);
-    faroles.forEach((f, i) => f.classList.toggle('on', i < n));
-  }
   S.barrio = () => {
     const sug = P.sugerida(), enc = P.zonasEncendidas(), est = P.estrellas();
     const zonas = CH.ZONAS.map(z => {
@@ -87,17 +73,20 @@
       const desc = `${z.nombre}: ${e === 'completa' ? 'completa' : e === 'cerrada' ? (z.id === 'plaza' ? 'se abre al completar cuatro rutas' : 'se abre después del primer episodio') : n ? n + ' de ' + t + ' episodios' : 'sin empezar'}`;
       const persona = e === 'completa' && z.quien !== 'familia' && z.quien !== 'cocuyo' ? `<button class="vecino" data-vecino="${z.id}" aria-label="Hablar con ${esc(CH.PERSONAJES[z.quien].nombre)}">${CH.personaje(z.quien, 'vecino-img')}</button>` : '';
       return `<div class="zona-pin ${e}" style="left:${z.mapa.x}%;top:${z.mapa.y}%;--z:${z.color};--zt:${z.tinta}">
-        <span class="luz" aria-hidden="true"></span>${abierta ? `<a class="zona-toque" href="#zona/${z.id}" tabindex="-1" aria-hidden="true"></a>` : `<a class="zona-toque" href="#barrio" tabindex="-1" aria-hidden="true" data-cerrada="${z.id}"></a>`}${persona}
+        ${persona}
         <a class="zona-et" href="${abierta ? '#zona/' + z.id : '#barrio'}" ${abierta ? '' : 'aria-disabled="true" data-cerrada="' + z.id + '"'} aria-label="${esc(desc)}"><span>${esc(z.nombre)}</span>${estado}</a></div>`;
     }).join('');
+    // Manzanas: zona de toque grande y velo de estado (apagada, tenue, encendida).
+    const bloques = CH.ZONAS.map(z => { const [x0, y0, x1, y1] = z.bloque, e = estadoZona(z.id);
+      return `<a class="zona-bloque ${e}" href="${e === 'cerrada' ? '#barrio' : '#zona/' + z.id}" ${e === 'cerrada' ? 'data-cerrada="' + z.id + '"' : ''} tabindex="-1" aria-hidden="true" style="left:${x0}%;top:${y0}%;width:${x1 - x0}%;height:${y1 - y0}%"></a>`; }).join('');
     const zs = sug && CH.zona(sug.zona);
     const tarjeta = sug ? (() => { const i = CH.RUTAS[sug.zona].indexOf(sug.ep) + 1; return `<a class="seguir-tarjeta" href="#ep/${sug.ep.id}" style="--z:${zs.color};--zt:${zs.tinta}">
         <span class="seguir-cara" aria-hidden="true">${zs.quien === 'cocuyo' || zs.quien === 'familia' ? CH.cocuyo('feliz') : CH.personaje(zs.quien)}</span>
         <span class="crece"><span class="seguir-zona">${esc(zs.nombre)} · episodio ${i} de ${P.total(sug.zona)}</span><b>${esc(sug.ep.titulo)}</b></span>
         <span class="btn btn-primario btn-chico" aria-hidden="true">${P.algunEpisodio() ? 'Seguir' : 'Empezar'}${I.flecha}</span></a>`; })()
       : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Juega los minijuegos o completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
-    // Cocuyo espera sobre la avenida, a la altura de la zona sugerida.
-    const cy = zs ? Math.max(4, zs.mapa.y - 14) : 4, cx = zs ? zs.mapa.x + (zs.mapa.x < 50 ? 13 : -13) : 50;
+    // Cocuyo espera en la avenida, frente a la manzana de la zona sugerida (sin zona: junto a su estatua).
+    const cy = zs ? (zs.bloque[1] + zs.bloque[3]) / 2 - 6 : 36, cx = zs ? (zs.mapa.x < 50 ? 45 : 55) : 50;
     CH.pintar(`<div class="pantalla-mapa">
       <header class="barra-mapa">
         <a class="mi-inventor" href="#casillero" aria-label="Mi casillero">${CH.avatar(CH.E.avatar, 'av-mini')}</a>
@@ -107,15 +96,13 @@
       </header>
       <h1 class="solo-lector">Tu barrio: ${enc} de 8 zonas encendidas</h1>
       <div class="mapa" role="group" aria-label="Mapa del barrio">
-        <div class="mapa-img" aria-hidden="true">${mapaSVG || (CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false))}</div>
+        <div class="mapa-img" aria-hidden="true">${CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false)}</div>
+        ${bloques}
         <span class="coc-mapa-pos" style="top:${cy}%;left:${cx}%" aria-hidden="true">${CH.cocuyo('feliz', 'coc-mapa')}</span>
         ${zonas}
       </div>
       <div class="flota-abajo">${tarjeta}</div>
     </div>${nav('barrio')}`, { clase: 'modo-mapa' });
-    const caja = CH.$main.querySelector('.mapa-img');
-    if (mapaSVG) encenderMapa(caja);
-    else cargarMapa().then(t => { if (t && document.body.contains(caja)) { caja.innerHTML = t; encenderMapa(caja); } });
     // En pantallas bajitas, que la zona sugerida quede a la vista.
     if (zs && innerHeight < 820) { const pin = CH.$main.querySelector(`.zona-pin[style*="${zs.mapa.y}%"]`); if (pin) requestAnimationFrame(() => window.scrollTo(0, Math.max(0, pin.getBoundingClientRect().top + scrollY - innerHeight * .45))); }
     CH.on('[data-cerrada]', 'click', ev => {
@@ -149,7 +136,7 @@
     CH.pintar(`<div class="pantalla zona-p" style="--z:${z.color};--zt:${z.tinta}">
       <header class="zona-cab"><a class="btn-redondo" href="#barrio" aria-label="Volver al barrio">${I.atras}</a>
         <div class="crece"><span class="zona-et-c">${esc(z.nombre)}</span><h1 class="t-titulo">${esc(z.tema)}</h1></div></header>
-      <div class="zona-heroe" aria-hidden="true">${CH.fondo(id, 'zona-fondo')}${z.quien === 'cocuyo' ? CH.cocuyo('celebrando', 'zona-quien') : CH.personaje(z.quien, 'zona-quien')}</div>
+      <div class="zona-heroe" aria-hidden="true">${CH.vista(id, 'zona-fondo')}${z.quien === 'cocuyo' ? CH.cocuyo('celebrando', 'zona-quien') : CH.personaje(z.quien, 'zona-quien')}</div>
       <p class="t-nota">Con ${esc(z.quienNombre.replace(/^Tu /, 'tu ').replace(/^La /, 'la '))} · ${P.cuantos(id)} de ${P.total(id)} episodios</p>
       <ol class="eps">${eps}</ol>
       ${juego}
@@ -258,7 +245,7 @@
         <div class="crece"><h1 class="t-titulo">Mi álbum</h1><span class="t-nota">${CH.E.cromos.length} de ${todos.length} cromos · elige una sección</span></div></header>
       <ul class="secciones">${grupos.map(g => {
         const lista = todos.filter(c => c.zona === g.id), ok = lista.filter(c => tiene(c.id)).length, hay = lista.some(c => nuevos.includes(c.id));
-        const arte = g.id === 'reto' ? `<span class="seccion-reto">${frascoSVG(Object.keys(CH.E.reto).length, true)}</span>` : CH.fondo(g.id, 'seccion-fondo');
+        const arte = g.id === 'reto' ? `<span class="seccion-reto">${frascoSVG(Object.keys(CH.E.reto).length, true)}</span>` : CH.vista(g.id, 'seccion-fondo');
         return `<li><a class="seccion ${ok === lista.length ? 'llena' : ''}" href="#album/${g.id}" style="--z:${g.c};--zt:${g.t}" aria-label="${esc(g.n)}: ${ok} de ${lista.length} cromos${hay ? ', con cromos nuevos' : ''}">
           <span class="seccion-arte" aria-hidden="true">${arte}</span>
           <span class="seccion-pie" aria-hidden="true"><b>${esc(g.n)}</b><span>${ok}/${lista.length}</span></span>
@@ -276,7 +263,7 @@
       <header class="barra"><a class="btn-redondo" href="#album/indice" aria-label="Volver al índice del álbum">${I.atras}</a>
         <div class="crece"><span class="zona-et-c">${esc(g.n)}</span><h1 class="t-titulo">${esc(g.tema)}</h1></div>
         <span class="pildora" role="img" aria-label="${ok} de ${lista.length} cromos">${ok}/${lista.length}</span></header>
-      ${sellos ? '' : `<div class="album-banda" aria-hidden="true">${CH.fondo(g.id, 'seccion-fondo')}</div>`}
+      ${sellos ? '' : `<div class="album-banda" aria-hidden="true">${CH.vista(g.id, 'seccion-fondo')}</div>`}
       <div class="album-hoja ${sellos ? 'sellos' : ''}">
         <ul class="cromos">${lista.map(c => {
           const num = sellos ? 'Día ' + (lista.indexOf(c) + 1) : todos.indexOf(c) + 1;
@@ -483,7 +470,7 @@
       <section id="s-privacidad"><h2>Privacidad</h2><p>chispa no tiene cuentas, no pide nombres ni datos personales, no usa ubicación, cámara ni micrófono, no muestra publicidad y no envía nada a internet (Ley 1581 de 2012). El avance, los dibujos y la bitácora se guardan solo en este aparato. No hay notificaciones ni rachas que se pierden.</p>
         <button class="btn btn-borde" data-borrar>Borrar todo el avance</button></section>
       <section id="s-fuentes"><h2>Fuentes de los datos</h2><ul class="lista-fuentes">${[...usadas].filter(k => CH.F[k]).map(k => `<li><a href="${CH.F[k].url}" target="_blank" rel="noopener">${esc(CH.F[k].nombre)}</a></li>`).join('')}</ul></section>
-      <section><h2>Créditos</h2><p>Proyecto académico de Diseño Gráfico. Ilustraciones generadas con la IA de Figma y editadas a mano; voces del sistema o de ElevenLabs; investigación, diseño y código con apoyo de Claude (IA). Tipografías Bricolage Grotesque y Lexend (licencia OFL).</p></section>
+      <section><h2>Créditos</h2><p>Proyecto académico de Diseño Gráfico. Ilustración del barrio y sus vistas de cada zona generada con IA en Adobe Firefly; demás ilustraciones generadas con la IA de Figma y editadas a mano; voces del sistema o de ElevenLabs; investigación, diseño y código con apoyo de Claude (IA). Tipografías Bricolage Grotesque y Lexend (licencia OFL).</p></section>
     </div>${nav('')}`);
     CH.on('[data-ir]', 'click', ev => { ev.preventDefault(); const s = document.getElementById('s-' + ev.currentTarget.dataset.ir); if (s) { s.scrollIntoView({ behavior: CH.menosMovimiento() ? 'auto' : 'smooth' }); const h = s.querySelector('h2'); h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } });
     CH.on('[data-aj]', 'click', ev => {
@@ -548,5 +535,6 @@
 
   /* ---------- Arranque ---------- */
   CH.arrancar();
-  cargarMapa();
+  // Precarga el mapa para que el barrio aparezca sin parpadeo.
+  if (CH.hayImagen('mapa', '')) { const im = new Image(); im.src = 'img/fondos/barrio.webp'; }
 })();

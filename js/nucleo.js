@@ -133,7 +133,8 @@
     personaje: id => `img/personajes/personaje-${id}.svg`,
     avatar: id => `img/avatares/avatar-${id}.svg`,
     fondo: id => `img/fondos/fondo-${id}.svg`,
-    mapa: () => 'img/fondos/mapa-barrio.svg',
+    mapa: () => 'img/fondos/barrio.webp',
+    zona: id => `img/zonas/${id}.webp`,
     escena: id => `img/escenas/${id}.svg`,
     objeto: id => `img/objetos/${id}.svg`
   };
@@ -161,6 +162,8 @@
   CH.personaje = (id, cls = '', alt = '') => id === 'cocuyo' ? CH.cocuyo('saludando', cls, alt) : CH.ilus('personaje', id, { cls: 'personaje ' + cls, alt });
   CH.avatar = (id, cls = '', alt = '') => CH.ilus('avatar', id, { cls: 'avatar ' + cls, alt });
   CH.fondo = (id, cls = '') => CH.ilus('fondo', id, { cls });
+  // Vista aérea de la zona, recortada de la ilustración del barrio; si falta, el fondo de la zona.
+  CH.vista = (id, cls = '') => CH.hayImagen('zona', id) ? CH.ilus('zona', id, { cls: 'vista ' + cls }) : CH.fondo(id, cls);
 
   /* ================= ÍCONOS DE INTERFAZ ================= */
   const s = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
