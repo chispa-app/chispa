@@ -108,7 +108,7 @@
     if (mapaSVG) encenderMapa(caja);
     else cargarMapa().then(t => { if (t && document.body.contains(caja)) { caja.innerHTML = t; encenderMapa(caja); } });
     // En pantallas bajitas, que la zona sugerida quede a la vista.
-    if (zs && innerHeight < 700) { const pin = CH.$main.querySelector(`.zona-pin[style*="${zs.mapa.y}%"]`); if (pin) requestAnimationFrame(() => window.scrollTo(0, Math.max(0, pin.getBoundingClientRect().top + scrollY - innerHeight * .45))); }
+    if (zs && innerHeight < 820) { const pin = CH.$main.querySelector(`.zona-pin[style*="${zs.mapa.y}%"]`); if (pin) requestAnimationFrame(() => window.scrollTo(0, Math.max(0, pin.getBoundingClientRect().top + scrollY - innerHeight * .45))); }
     CH.on('[data-cerrada]', 'click', ev => {
       ev.preventDefault();
       const z = ev.currentTarget.dataset.cerrada;
@@ -191,7 +191,7 @@
       ${!fin ? `<div class="cierre-avance"><span class="segmentos" aria-hidden="true">${CH.RUTAS[zona].map(e => `<i class="${CH.E.eps[e.id] ? 'si' : ''}"></i>`).join('')}</span><span>${esc(mayus(z.nombre))} · ${n} de ${t} · ${esc(avance)}</span></div>` : ''}
       ${sorpresa ? `<p class="aviso-claro">${CH.personaje(sorpresa.p, 'mini-cara')}<span><b>¡Sorpresa!</b> ${esc(sorpresa.dato)} Búscalo en tu mapa.</span></p>` : ''}
       ${plazaNueva ? `<p class="aviso-claro">${CH.cocuyo('senalando', 'mini-cara')}<span>¡Se abrió la Plaza: el taller de inventores!</span></p>` : ''}
-      <div class="abajo">${fin ? '<a class="btn btn-primario" href="#diploma">Ver mi diploma</a>' : cromo ? `<a class="btn btn-primario" href="#album/${zona}">Pegar en mi álbum</a>` : `<a class="btn btn-primario" href="#zona/${zona}">Seguir</a>`}<a class="btn btn-claro" href="#barrio">Volver al barrio</a></div>
+      <div class="abajo">${fin ? '<a class="btn btn-primario" href="#diploma">Ver mi diploma</a>' : cromo ? `<a class="btn btn-primario" href="#album/${zona}">${cromoNuevo ? 'Pegar en mi álbum' : 'Ver en mi álbum'}</a>` : `<a class="btn btn-primario" href="#zona/${zona}">Seguir</a>`}<a class="btn btn-claro" href="#barrio">Volver al barrio</a></div>
     </div>`, { clase: 'modo-noche', voz });
     CH.sonido('cromo');
     setTimeout(() => CH.chispas(CH.$main.querySelector('.cierre-cromo .cromo-t') || CH.$main.querySelector('.coc-cierre'), 24), CH.menosMovimiento() ? 0 : 1300);
@@ -267,9 +267,10 @@
       <header class="barra"><a class="btn-redondo" href="#album/indice" aria-label="Volver al índice del álbum">${I.atras}</a>
         <div class="crece"><span class="zona-et-c">${esc(g.n)}</span><h1 class="t-titulo">${esc(g.tema)}</h1></div>
         <span class="pildora" role="img" aria-label="${ok} de ${lista.length} cromos">${ok}/${lista.length}</span></header>
+      ${sellos ? '' : `<div class="album-banda" aria-hidden="true">${CH.fondo(g.id, 'seccion-fondo')}</div>`}
       <div class="album-hoja ${sellos ? 'sellos' : ''}">
         <ul class="cromos">${lista.map(c => {
-          const num = todos.indexOf(c) + 1;
+          const num = sellos ? 'Día ' + (lista.indexOf(c) + 1) : todos.indexOf(c) + 1;
           return tiene(c.id)
             ? `<li><button class="cromo-t mini ${c.tipo} ${nuevos.includes(c.id) ? 'es-nuevo' : ''}" data-cromo="${c.id}" aria-label="Cromo ${num}: ${esc(c.t)}. Toca para ver el dato.">${cromoHTML(c)}</button></li>`
             : `<li><span class="cromo-vacio" role="img" aria-label="Cromo ${num}, sin ganar"><b>${num}</b></span></li>`;
@@ -377,7 +378,7 @@
     const todosEps = CH.ZONAS.flatMap(z => CH.RUTAS[z.id]);
     CH.pintar(`<div class="pantalla">
       <h1 class="t-titulo">Mi casillero</h1>
-      <section class="casillero-yo">${CH.avatar(CH.E.avatar, 'av-grande')}<div><b>${nivelNombre()}</b><span class="pildora">${I.estrella}<b>${est}</b> estrellas</span><button class="btn btn-borde btn-chico" data-cambiar>Cambiar inventor o edad</button></div></section>
+      <section class="casillero-yo">${CH.avatar(CH.E.avatar, 'av-grande')}<div><b>${nivelNombre()}</b><span class="pildora">${I.estrella}<b>${est}</b> estrellas</span><button class="btn btn-borde btn-chico" data-cambiar aria-label="Cambiar inventor o edad">Cambiar</button></div></section>
       <section><h2 class="t-sub">Accesorios</h2><p class="t-nota">Se abren con estrellas. No hay tienda ni monedas.</p>
         <ul class="accesorios">${CH.ACCESORIOS.map(a => { const ok = est >= a.estrellas; return `<li><button class="acc ${ok ? '' : 'cerrado'}" ${ok ? '' : 'disabled'} data-acc="${a.id}" aria-pressed="${CH.E.accesorio === a.id}">${CH.ilus('objeto', a.o)}<span>${esc(a.n)}</span><small>${ok ? (CH.E.accesorio === a.id ? 'Puesto' : 'Ponerlo') : a.estrellas + ' estrellas'}</small></button></li>`; }).join('')}</ul></section>
       <section><h2 class="t-sub">Misiones en casa</h2>${misiones.length ? `<ul class="lista-misiones">${misiones.map(id => { const ep = todosEps.find(e => e.id === id), m = ep && ep.pasos.find(p => p.tipo === 'mision'); const t = m ? (CH.E.nivel === 'experto' && m.x ? m.x : m.t) : ''; const ok = CH.E.misiones[id]; return `<li class="tarjeta"><p class="t-nota">${esc(ep ? ep.titulo : '')}</p><p>${esc(t)}</p><button class="btn ${ok ? 'btn-borde' : 'btn-oscuro'} btn-chico" data-mision="${id}" aria-pressed="${ok}">${ok ? '¡Hecha!' : 'La hicimos'}</button></li>`; }).join('')}</ul>` : '<p class="t-nota">Aparecen al terminar la última parte de cada ruta.</p>'}</section>
@@ -422,7 +423,7 @@
     return `<article class="cartel"><span class="cartel-et">Feria del barrio · Invento</span><h2>${esc(nombre.charAt(0).toUpperCase() + nombre.slice(1))}</h2>${pr ? `<p class="cartel-sub">Para resolver: ${esc(pr.t.toLowerCase())}</p>` : ''}
       ${boceto ? `<img class="cartel-boceto" src="${boceto.img}" alt="Boceto del invento">` : `<div class="cartel-ico">${CH.ilus('objeto', (te && te.o) || 'lapiz')}</div>`}
       <dl><dt>Problema</dt><dd>${esc(pr ? pr.t : '—')}</dd><dt>Tecnología verde</dt><dd>${esc(te ? te.t : '—')}</dd><dt>Para</dt><dd>${esc(pa ? pa.t : '—')}</dd><dt>Probado con</dt><dd>Lluvia, sol y noche</dd></dl>
-      <p class="cartel-autor">${CH.avatar(CH.E.avatar, 'mini-cara')} Inventor del barrio · chispa</p></article>`;
+      <p class="cartel-autor">${CH.avatar(CH.E.avatar, 'mini-cara')} ${/^Inventora/.test((CH.AVATARES.find(a => a.id === CH.E.avatar) || {}).nombre || '') ? 'Inventora' : 'Inventor'} del barrio · chispa</p></article>`;
   };
   S.diploma = () => {
     const fechaTxt = new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });

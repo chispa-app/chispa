@@ -7,7 +7,7 @@ NS = '{http://www.w3.org/2000/svg}'
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FUENTE = os.path.join(RAIZ, 'herramientas/fuentes/mapa-vinetas.svg')
 SALIDA = os.path.join(RAIZ, 'img/fondos/mapa-barrio.svg')
-W, H = 1024, 1760
+W, H = 1024, 1580
 K = '#5A3526'
 rnd = random.Random(7)
 # Filtros para las zonas que aún no se encienden (la app los aplica por zona).
@@ -150,23 +150,20 @@ def paradero(x, y):
 deco = []
 # Árboles en las esquinas de los cruces y en los bordes
 for (x, y, s) in [(410, 476, .8), (614, 476, .8), (410, 1262, .8), (614, 1262, .8), (420, 54, .8), (604, 64, .85),
-                  (36, 438, .8), (990, 440, .8), (40, 1222, .8), (986, 1224, .85), (300, 1620, 1.0), (880, 1620, .95),
-                  (40, 1720, .9), (620, 1740, .85), (420, 1700, .8), (990, 1690, .8)]:
+                  (36, 438, .8), (990, 440, .8), (40, 1222, .8), (986, 1224, .85), (410, 1566, .75), (614, 1566, .75)]:
     deco.append((y, arbol(x, y, s)))
-for (x, y, s) in [(36, 1630, 1.0), (980, 1600, .95), (420, 920, .8), (606, 700, .78)]:
+for (x, y, s) in [(420, 920, .8), (606, 700, .78)]:
     deco.append((y, palma(x, y, s)))
-for (x, y) in [(436, 360), (590, 452), (436, 1144), (590, 1236), (590, 120), (436, 1600)]:
+for (x, y) in [(436, 360), (590, 452), (436, 1144), (590, 1236), (590, 120), (590, 1530)]:
     deco.append((y, farol(x, y)))
-for (x, y) in [(330, 450), (700, 452), (210, 832), (830, 838), (330, 1236), (690, 1240), (210, 1700), (790, 1720), (560, 1680)]:
+for (x, y) in [(330, 450), (700, 452), (210, 832), (830, 838), (330, 1236), (690, 1240)]:
     deco.append((y, flores(x, y)))
 # Banca y mesa de picnic en el parquecito de abajo
-deco.append((1650, f'<g transform="translate(470 1650)"><rect x="-34" y="-10" width="68" height="12" rx="4" fill="#C98B55" stroke="{K}" stroke-width="2.2"/><path d="M-26 2v14M26 2v14" stroke="{K}" stroke-width="3"/></g>'))
+deco.append((1650, f'<g opacity="0" transform="translate(470 1650)"><rect x="-34" y="-10" width="68" height="12" rx="4" fill="#C98B55" stroke="{K}" stroke-width="2.2"/><path d="M-26 2v14M26 2v14" stroke="{K}" stroke-width="3"/></g>'))
 
 # Casitas del fondo, setos y paradero
-for (x, y, s_, c) in [(140, 1650, .95, ('#F2D7B6', '#DDB993', '#C96A55', '#E9927A')), (330, 1740, .85, ('#D9E6F2', '#B8CBDC', '#5B7FA8', '#86A6C8')),
-                      (740, 1650, .95, ('#F6E2A8', '#E2C47E', '#B9734A', '#D99467')), (920, 1745, .85, ('#E8D2F0', '#CDB1DA', '#8C5BA8', '#AE84C6'))]:
+for (x, y, s_, c) in [(52, 1570, .7, ('#F2D7B6', '#DDB993', '#C96A55', '#E9927A')), (975, 1572, .7, ('#E8D2F0', '#CDB1DA', '#8C5BA8', '#AE84C6'))]:
     deco.append((y, casita(x, y, s_, *c)))
-deco.append((1560, seto(70, 1560, 330))); deco.append((1560, seto(624, 1560, 330)))
 for _, s in sorted(deco): A(s)
 
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" fill="none">'

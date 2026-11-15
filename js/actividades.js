@@ -230,9 +230,9 @@
     function una() {
       const c = cosas[k];
       ctx.actor(null, ctx.quien, 'curioso');   // la instrucción va en la voz y en la bandeja: un solo mensaje en pantalla
-      ctx.hoja.innerHTML = `<div class="arr-fila"><span class="chip-act">${esc(p.etiqueta || 'Clasifica')} · ${k + 1} de ${cosas.length}</span></div>
+      ctx.hoja.innerHTML = `<div class="arr-fila"><span class="chip-act">${k + 1} de ${cosas.length}</span></div>
         <div class="bandeja"><div class="obj-t grande" id="obj-arr" tabindex="-1" style="touch-action:none" aria-label="${esc(c.n)}">${CH.ilus('objeto', c.o)}</div>
-          <div class="bandeja-txt"><span class="bandeja-et">${esc(p.etiqueta === 'Elige' ? 'Piensa en esto' : 'Clasifica esto')}</span><b>${esc(c.n)}</b><span class="t-nota">Arrástralo o toca dónde va</span></div></div>
+          <div class="bandeja-txt"><span class="bandeja-et">${esc(p.etiqueta === 'Elige' ? 'Piensa en esto' : 'Clasifica esto')}</span><b>${esc(c.n)}</b><span class="t-nota">Arrástralo o toca donde va</span></div></div>
         <h2 class="hoja-titulo destinos-titulo">${esc(T(p.pregunta || '¿A dónde va?'))}</h2>
         <div class="destinos n${destinos.length}" role="group" aria-label="Opciones">${destinos.map(d => typeof d === 'string' ? caneca(d) : `<button class="destino" data-destino="${d.id}">${d.o ? CH.ilus('objeto', d.o) : ''}<b>${esc(d.n)}</b>${d.sub ? `<span>${esc(d.sub)}</span>` : ''}</button>`).join('')}</div>
         <div data-acciones class="acciones"></div>`;

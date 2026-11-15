@@ -40,10 +40,13 @@ CH.SORPRESAS = [
 ];
 CH.cromos = () => {
   const L = [];
-  CH.ZONAS.forEach(z => (CH.RUTAS[z.id] || []).forEach(ep => L.push({ id: ep.id, zona: z.id, tipo: ep.dorado ? 'dorado' : 'episodio', ...ep.cromo })));
+  // Orden del álbum: por zona (episodios, minijuego, sorpresa) y el reto al final. Así cada página va numerada en orden.
+  CH.ZONAS.forEach(z => {
+    (CH.RUTAS[z.id] || []).forEach(ep => L.push({ id: ep.id, zona: z.id, tipo: ep.dorado ? 'dorado' : 'episodio', ...ep.cromo }));
+    CH.JUEGOS_INFO.filter(j => j.zona === z.id).forEach(j => L.push({ id: 'juego-' + j.id, zona: j.zona, tipo: 'juego', t: j.nombre, o: j.o, dato: 'Llegaste al nivel 8.', f: null }));
+    CH.SORPRESAS.filter(s => s.zona === z.id).forEach(s => L.push({ ...s, tipo: 'sorpresa', f: null }));
+  });
   CH.RETO.forEach((t, i) => L.push({ id: 'reto-' + (i + 1), zona: 'reto', tipo: 'sello', t: 'Día ' + (i + 1), o: 'estrella', dato: t, f: null }));
-  CH.JUEGOS_INFO.forEach(j => L.push({ id: 'juego-' + j.id, zona: j.zona, tipo: 'juego', t: j.nombre, o: j.o, dato: 'Llegaste al nivel 8.', f: null }));
-  CH.SORPRESAS.forEach(s => L.push({ ...s, tipo: 'sorpresa', f: null }));
   return L;
 };
 
