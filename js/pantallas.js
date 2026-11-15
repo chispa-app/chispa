@@ -72,7 +72,7 @@
       const estado = e === 'completa' ? `<span class="badge" aria-hidden="true">${I.check}</span>` : e === 'cerrada' ? `<span class="badge cerrado" aria-hidden="true">${I.candado}</span>` : n ? `<span class="badge num" aria-hidden="true">${n}/${t}</span>` : '';
       const desc = `${z.nombre}: ${e === 'completa' ? 'completa' : e === 'cerrada' ? (z.id === 'plaza' ? 'se abre al completar cuatro rutas' : 'se abre después del primer episodio') : n ? n + ' de ' + t + ' episodios' : 'sin empezar'}`;
       const persona = e === 'completa' && z.quien !== 'familia' && z.quien !== 'cocuyo' ? `<button class="vecino" data-vecino="${z.id}" aria-label="Hablar con ${esc(CH.PERSONAJES[z.quien].nombre)}">${CH.personaje(z.quien, 'vecino-img')}</button>` : '';
-      return `<div class="zona-pin ${e}" style="left:${z.mapa.x}%;top:${z.mapa.y}%;--z:${z.color};--zt:${z.tinta}">
+      return `<div class="zona-pin ${e} ${z.mapa.x < 50 ? 'izq' : 'der'}" data-pin="${z.id}" style="left:${z.mapa.x}%;top:${z.mapa.y}%;--z:${z.color};--zt:${z.tinta}">
         ${persona}
         <a class="zona-et" href="${abierta ? '#zona/' + z.id : '#barrio'}" ${abierta ? '' : 'aria-disabled="true" data-cerrada="' + z.id + '"'} aria-label="${esc(desc)}"><span>${esc(z.nombre)}</span>${estado}</a></div>`;
     }).join('');
@@ -86,7 +86,7 @@
         <span class="btn btn-primario btn-chico" aria-hidden="true">${P.algunEpisodio() ? 'Seguir' : 'Empezar'}${I.flecha}</span></a>`; })()
       : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Juega los minijuegos o completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
     // Cocuyo espera en la avenida, frente a la manzana de la zona sugerida (sin zona: junto a su estatua).
-    const cy = zs ? (zs.bloque[1] + zs.bloque[3]) / 2 - 6 : 36, cx = zs ? (zs.mapa.x < 50 ? 45 : 55) : 50;
+    const cy = zs ? (zs.bloque[1] + zs.bloque[3]) / 2 - 5 : 28, cx = zs ? (zs.mapa.x < 50 ? 45 : 55) : 50;
     CH.pintar(`<div class="pantalla-mapa">
       <header class="barra-mapa">
         <a class="mi-inventor" href="#casillero" aria-label="Mi casillero">${CH.avatar(CH.E.avatar, 'av-mini')}</a>
@@ -95,6 +95,7 @@
         <span class="pildora" role="img" aria-label="${est} chispas">${I.estrella}<b>${est}</b></span>
       </header>
       <h1 class="solo-lector">Tu barrio: ${enc} de 8 zonas encendidas</h1>
+      <div class="mapa-marco">
       <div class="mapa" role="group" aria-label="Mapa del barrio">
         <div class="mapa-img" aria-hidden="true">${CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false)}</div>
         ${bloques}
@@ -102,9 +103,10 @@
         ${zonas}
       </div>
       <div class="flota-abajo">${tarjeta}</div>
+      </div>
     </div>${nav('barrio')}`, { clase: 'modo-mapa' });
     // En pantallas bajitas, que la zona sugerida quede a la vista.
-    if (zs && innerHeight < 820) { const pin = CH.$main.querySelector(`.zona-pin[style*="${zs.mapa.y}%"]`); if (pin) requestAnimationFrame(() => window.scrollTo(0, Math.max(0, pin.getBoundingClientRect().top + scrollY - innerHeight * .45))); }
+    if (zs && innerHeight < 820) { const pin = CH.$main.querySelector(`[data-pin="${zs.id}"]`); if (pin) requestAnimationFrame(() => window.scrollTo(0, Math.max(0, pin.getBoundingClientRect().top + scrollY - innerHeight * .45))); }
     CH.on('[data-cerrada]', 'click', ev => {
       ev.preventDefault();
       const z = ev.currentTarget.dataset.cerrada;
@@ -220,22 +222,40 @@
     CH.pintar(`<div class="pantalla album-portada">
       <h1 class="solo-lector">Mi álbum</h1>
       <button class="libro" data-abrir aria-label="Abrir mi álbum. Tienes ${n} de ${todos.length} cromos.">
+        <span class="libro-sombra" aria-hidden="true"></span>
         <span class="libro-paginas" aria-hidden="true"></span>
-        <span class="libro-tapa" aria-hidden="true">
-          <span class="libro-lomo"></span>
-          <span class="libro-sello">Álbum de inventor</span>
-          <span class="libro-titulo">Mi barrio<br>verde</span>
-          <span class="libro-coc">${CH.cocuyo('celebrando')}</span>
-          <span class="libro-cuenta"><b>${n}</b> de ${todos.length} cromos</span>
-          <span class="libro-barra"><i style="width:${Math.round(n / todos.length * 100)}%"></i></span>
+        <span class="libro-interior" aria-hidden="true">
+          <span class="interior-sello">Mi álbum</span>
+          <span class="interior-indice">${GRUPOS().map(g => `<i style="--c:${g.c}"></i>`).join('')}</span>
+          <span class="interior-firma">Este álbum es de un inventor del barrio</span>
         </span>
+        <span class="libro-hoja h1" aria-hidden="true"></span><span class="libro-hoja h2" aria-hidden="true"></span>
+        <span class="libro-tapa" aria-hidden="true">
+          <span class="tapa-frente">
+            <span class="libro-lomo"></span>
+            <span class="tapa-costura"></span>
+            <span class="tapa-esquina arriba"></span><span class="tapa-esquina abajo"></span>
+            <span class="libro-sello">Álbum de inventor</span>
+            <span class="libro-titulo">Mi barrio<br>verde</span>
+            <span class="libro-medalla">
+              <span class="medalla-aro"></span>
+              <span class="medalla-chispa c1">${I.estrella}</span><span class="medalla-chispa c2">${I.estrella}</span><span class="medalla-chispa c3">${I.estrella}</span>
+              <span class="libro-coc">${CH.cocuyo('celebrando')}</span>
+            </span>
+            <span class="libro-pegado p1" style="--c:${CH.ZONAS[2].color}"></span><span class="libro-pegado p2" style="--c:${CH.ZONAS[5].color}"></span>
+            <span class="libro-cuenta"><b>${n}</b> de ${todos.length} cromos</span>
+            <span class="libro-barra"><i style="width:${Math.round(n / todos.length * 100)}%"></i></span>
+          </span>
+          <span class="tapa-dorso"></span>
+        </span>
+        <span class="libro-cinta" aria-hidden="true"></span>
       </button>
       ${nuevos ? `<p class="aviso-nuevo"><b>${nuevos}</b> cromo${nuevos > 1 ? 's' : ''} nuevo${nuevos > 1 ? 's' : ''} para pegar</p>` : ''}
       <button class="btn btn-primario" data-abrir>Abrir mi álbum</button>
     </div>${nav('album')}`, { voz: { t: `Tu álbum. Tienes ${n} de ${todos.length} cromos.` } });
     CH.on('[data-abrir]', 'click', () => {
       const libro = CH.$main.querySelector('.libro'); libro.classList.add('abierto'); CH.sonido('pasa');
-      setTimeout(() => CH.ir('#album/indice'), CH.menosMovimiento() ? 0 : 520);
+      setTimeout(() => CH.ir('#album/indice'), CH.menosMovimiento() ? 0 : 950);
     });
   }
   function albumIndice(todos, grupos) {
@@ -282,23 +302,67 @@
 
   /* ================= RETO DE 14 DÍAS ================= */
   // Frasco de cocuyos: cada día hecho enciende uno. 14 lugares fijos dentro del vidrio.
-  const LUGARES_F = [[70, 196], [118, 204], [150, 178], [92, 166], [52, 150], [130, 146], [100, 126], [146, 112], [62, 112], [84, 88], [120, 84], [150, 80], [56, 80], [104, 196]];
+  const LUGARES_F = [[70, 196], [118, 204], [150, 178], [92, 166], [52, 150], [130, 146], [100, 126], [146, 112], [62, 112], [84, 88], [120, 84], [150, 80], [56, 80], [74, 136]];
+  // Cada cocuyo es un Cocuyo en miniatura: casco naranja, cara clara, alas de vidrio y la barriga encendida.
+  const bichoSVG = (x, y, k, recien) => `<g class="cf ${k === recien ? 'recien' : ''}" style="--k:${k}" transform="translate(${x} ${y}) rotate(${(k * 37) % 50 - 25}) scale(1.3)">
+      <circle r="17" fill="url(#f-luz)"/>
+      <g class="cf-alas"><ellipse cx="-6" cy="-3" rx="6" ry="3.6" transform="rotate(-28 -6 -3)" fill="#FFFFFF" fill-opacity=".6" stroke="#FFFFFF" stroke-opacity=".8" stroke-width=".8"/><ellipse cx="6" cy="-3" rx="6" ry="3.6" transform="rotate(28 6 -3)" fill="#FFFFFF" fill-opacity=".6" stroke="#FFFFFF" stroke-opacity=".8" stroke-width=".8"/></g>
+      <path d="M-1.6 -9.5 l-2 -3.6 M1.6 -9.5 l2 -3.6" stroke="#5A3526" stroke-width="1" stroke-linecap="round"/><circle cx="-3.7" cy="-13.2" r="1.1" fill="#8A4B2A"/><circle cx="3.7" cy="-13.2" r="1.1" fill="#8A4B2A"/>
+      <ellipse cx="0" cy="2.5" rx="4.6" ry="6" fill="#6B3E2A"/>
+      <ellipse cx="0" cy="3.6" rx="3.4" ry="4.2" fill="#FFE58A"/><ellipse cx="-.8" cy="2.6" rx="1.3" ry="1.7" fill="#FFFBE6"/>
+      <circle cx="0" cy="-6" r="4.4" fill="#D9673E"/><circle cx="0" cy="-5.2" r="3.1" fill="#F6E3C8"/>
+      <circle cx="-1.2" cy="-5.6" r=".7" fill="#2B211D"/><circle cx="1.2" cy="-5.6" r=".7" fill="#2B211D"/></g>`;
   function frascoSVG(n, mini, recien = -1) {
     const brillo = Math.min(1, n / 14);
-    const bichos = LUGARES_F.map(([x, y], k) => k < n
-      ? `<g class="cf ${k === recien ? 'recien' : ''}" style="--k:${k}" transform="translate(${x} ${y})"><circle r="15" fill="url(#f-luz)"/><ellipse cx="0" cy="1" rx="4.5" ry="6" fill="#5A3526"/><circle cx="0" cy="4" r="4" fill="#FFE58A"/><path d="M-4 -2 l-6 -5 M4 -2 l6 -5" stroke="#F4EBDD" stroke-width="2" stroke-linecap="round" opacity=".8"/></g>`
-      : `<circle cx="${x}" cy="${y}" r="4" fill="none" stroke="#F4EBDD" stroke-opacity=".28" stroke-width="2" stroke-dasharray="3 3"/>`).join('');
-    return `<svg viewBox="0 0 200 250" class="frasco-svg" ${mini ? 'aria-hidden="true"' : `role="img" aria-label="Frasco con ${n} de 14 cocuyos encendidos"`}>
-      <defs><radialGradient id="f-luz"><stop offset="0" stop-color="#FFE58A" stop-opacity=".95"/><stop offset="1" stop-color="#FFE58A" stop-opacity="0"/></radialGradient>
-      <radialGradient id="f-dentro" cx=".5" cy=".62" r=".6"><stop offset="0" stop-color="#FFD34D" stop-opacity="${(.15 + brillo * .6).toFixed(2)}"/><stop offset="1" stop-color="#FFD34D" stop-opacity="0"/></radialGradient></defs>
-      <ellipse cx="100" cy="238" rx="78" ry="9" fill="#000" opacity=".25"/>
-      <path d="M60 46 H140 V58 C168 66 176 84 176 104 V206 C176 222 164 232 148 232 H52 C36 232 24 222 24 206 V104 C24 84 32 66 60 58 Z" fill="#9FC9DE" fill-opacity=".16" stroke="#F4EBDD" stroke-width="3"/>
-      <path d="M60 46 H140 V58 C168 66 176 84 176 104 V206 C176 222 164 232 148 232 H52 C36 232 24 222 24 206 V104 C24 84 32 66 60 58 Z" fill="url(#f-dentro)"/>
+    const bichos = LUGARES_F.map(([x, y], k) => k < n ? bichoSVG(x, y, k, recien)
+      : `<circle cx="${x}" cy="${y}" r="4" fill="#F4EBDD" fill-opacity=".05" stroke="#F4EBDD" stroke-opacity=".3" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>`).join('');
+    const cuerpo = 'M60 50 H140 V60 C168 68 178 86 178 106 V206 C178 223 165 234 148 234 H52 C35 234 22 223 22 206 V106 C22 86 32 68 60 60 Z';
+    return `<svg viewBox="0 0 200 252" class="frasco-svg" ${mini ? 'aria-hidden="true"' : `role="img" aria-label="Frasco con ${n} de 14 cocuyos encendidos"`}>
+      <defs>
+        <radialGradient id="f-luz"><stop offset="0" stop-color="#FFE58A" stop-opacity=".9"/><stop offset=".45" stop-color="#FFD34D" stop-opacity=".35"/><stop offset="1" stop-color="#FFD34D" stop-opacity="0"/></radialGradient>
+        <radialGradient id="f-dentro" cx=".5" cy=".66" r=".62"><stop offset="0" stop-color="#FFD34D" stop-opacity="${(.12 + brillo * .55).toFixed(2)}"/><stop offset="1" stop-color="#FFD34D" stop-opacity="0"/></radialGradient>
+        <linearGradient id="f-vidrio" x1="0" x2="1"><stop offset="0" stop-color="#CFE7F0" stop-opacity=".42"/><stop offset=".18" stop-color="#CFE7F0" stop-opacity=".1"/><stop offset=".75" stop-color="#CFE7F0" stop-opacity=".05"/><stop offset="1" stop-color="#9FC9DE" stop-opacity=".34"/></linearGradient>
+        <linearGradient id="f-tapa" x1="0" x2="1"><stop offset="0" stop-color="#A9391A"/><stop offset=".3" stop-color="#F07A45"/><stop offset=".55" stop-color="#E85D2A"/><stop offset="1" stop-color="#9C3417"/></linearGradient>
+        <radialGradient id="f-piso" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD34D" stop-opacity="${(.1 + brillo * .45).toFixed(2)}"/><stop offset="1" stop-color="#FFD34D" stop-opacity="0"/></radialGradient>
+        <clipPath id="f-dentro-clip"><path d="${cuerpo}"/></clipPath>
+      </defs>
+      <ellipse cx="100" cy="240" rx="96" ry="14" fill="url(#f-piso)"/>
+      <ellipse cx="100" cy="240" rx="74" ry="8" fill="#000" opacity=".3"/>
+      <path d="${cuerpo}" fill="#1C2A33" fill-opacity=".35"/>
+      <path d="${cuerpo}" fill="url(#f-dentro)"/>
+      <g clip-path="url(#f-dentro-clip)">
+        <path d="M20 222 C46 206 72 214 100 208 C128 202 154 212 180 204 V240 H20 Z" fill="#3E6B3A"/>
+        <path d="M20 228 C50 216 80 222 104 216 C130 211 156 220 180 214 V240 H20 Z" fill="#2E5530"/>
+        <path d="M30 214 c2 -8 4 -10 6 -14 M38 214 c0 -6 2 -9 4 -12 M150 212 c1 -7 3 -10 6 -13 M160 210 c0 -6 1 -8 3 -11" stroke="#6E9B4A" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M34 196 C70 178 108 186 160 154" stroke="#7A4A2E" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+        <path d="M96 182 c8 -10 18 -12 26 -10" stroke="#7A4A2E" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M122 172 c6 -8 16 -9 20 -4 c-6 7 -14 8 -20 4z" fill="#5FA052" stroke="#2E5530" stroke-width="1.2"/>
+        <path d="M60 186 c-2 -10 4 -18 12 -18 c2 8 -4 16 -12 18z" fill="#6FB25E" stroke="#2E5530" stroke-width="1.2"/>
+        <path d="M150 158 c8 -4 16 0 16 6 c-8 3 -14 0 -16 -6z" fill="#5FA052" stroke="#2E5530" stroke-width="1.2"/>
+      </g>
+      <path d="${cuerpo}" fill="url(#f-vidrio)"/>
       ${bichos}
-      <path d="M40 112 C40 96 46 86 58 80 M40 128 V196" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <rect x="50" y="18" width="100" height="30" rx="9" fill="#C2451C" stroke="#2A2130" stroke-width="3"/>
-      <path d="M56 30 H144" stroke="#E85D2A" stroke-width="5" stroke-linecap="round"/>
-      <path d="M66 18 c4 -12 64 -12 68 0" fill="none" stroke="#C99B6A" stroke-width="3"/></svg>`;
+      <path d="${cuerpo}" fill="none" stroke="#1B1420" stroke-opacity=".55" stroke-width="5"/>
+      <path d="${cuerpo}" fill="none" stroke="#F4EBDD" stroke-width="2.6"/>
+      <path d="M36 116 C36 98 42 88 54 82" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M36 132 V200" stroke="#FFFFFF" stroke-opacity=".4" stroke-width="5" stroke-linecap="round"/>
+      <path d="M48 210 V216" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+      <path d="M164 104 C164 96 160 88 154 84" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M52 228 H148" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="2"/>
+      <path d="M62 54 H138 M62 59 H138" stroke="#F4EBDD" stroke-opacity=".45" stroke-width="1.6"/>
+      <path d="M56 61 C58 66 70 69 100 69 C130 69 142 66 144 61" fill="none" stroke="#C99B6A" stroke-width="3.5"/>
+      <path d="M58 64 C70 70 130 70 142 64" fill="none" stroke="#A97A4A" stroke-width="1.5" stroke-dasharray="3 2.5"/>
+      <path d="M134 67 c10 4 14 14 10 24 l-8 -4 z" fill="#E9D3A8" stroke="#8A6A44" stroke-width="1.6" stroke-linejoin="round"/>
+      <circle cx="141" cy="76" r="1.6" fill="#8A6A44"/>
+      <path d="M128 66 c-6 -6 -12 -4 -10 2 c2 4 8 2 10 -2 c6 -6 12 -4 10 2 c-2 4 -8 2 -10 -2z" fill="#C99B6A" stroke="#8A6A44" stroke-width="1.3"/>
+      <path d="M66 20 C62 0 138 0 134 20" fill="none" stroke="#2A2130" stroke-width="6" stroke-linecap="round"/>
+      <path d="M66 20 C62 0 138 0 134 20" fill="none" stroke="#C8B79F" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="66" cy="22" r="4" fill="#C8B79F" stroke="#2A2130" stroke-width="2"/><circle cx="134" cy="22" r="4" fill="#C8B79F" stroke="#2A2130" stroke-width="2"/>
+      <rect x="48" y="24" width="104" height="28" rx="8" fill="url(#f-tapa)" stroke="#2A2130" stroke-width="3"/>
+      <path d="M58 28 V48 M68 28 V48 M78 28 V48 M88 28 V48 M98 28 V48 M108 28 V48 M118 28 V48 M128 28 V48 M138 28 V48" stroke="#000" stroke-opacity=".16" stroke-width="2"/>
+      <path d="M54 31 H146" stroke="#FFB08A" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="100" cy="24" rx="50" ry="5" fill="#F07A45" stroke="#2A2130" stroke-width="2.5"/>
+      <circle cx="84" cy="24" r="1.6" fill="#2A2130"/><circle cx="100" cy="23" r="1.6" fill="#2A2130"/><circle cx="116" cy="24" r="1.6" fill="#2A2130"/></svg>`;
   }
   let retoRecien = -1;
   S.reto = () => {

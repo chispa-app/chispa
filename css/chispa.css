@@ -195,9 +195,12 @@ p { margin: 0; text-wrap: pretty; }
 .mi-inventor { width: 52px; height: 52px; border-radius: var(--r-full); border: var(--borde); box-shadow: var(--sombra-dura-s); background: var(--crema); overflow: hidden; flex: 0 0 52px; display: block; position: relative; }
 .mi-inventor .av-mini { position: absolute; left: 50%; top: 6%; width: 150%; max-width: none; transform: translateX(-50%); }
 .mi-inventor .respaldo-persona { width: 100%; border: 0; }
-/* El mapa cabe entero entre la cabecera, la tarjeta «Seguir» y la navegación; a los lados sigue el pasto. */
-.mapa { position: relative; width: min(100%, max(300px, calc((100dvh - 276px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) * 3392 / 5056))); margin-inline: auto; aspect-ratio: 3392 / 5056; container-type: inline-size; }
-.mapa-img { position: absolute; inset: 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); }
+/* El mapa ocupa todo el ancho y todo el alto libre entre la cabecera y la navegación; la tarjeta «Seguir» flota encima de su borde de abajo (árboles y casas de relleno). */
+.pantalla-mapa { container-type: inline-size; }
+.mapa-marco { flex: 1 0 0; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); min-height: calc(138cqw + 128px); max-height: calc(100cqw * 6450 / 3392); overflow: clip; background: #7FAE5A; }
+.mapa-marco > .mapa, .mapa-marco > .flota-abajo { grid-area: 1 / 1; }
+.mapa { position: relative; align-self: start; width: 100%; aspect-ratio: 3392 / 6450; container-type: inline-size; }
+.mapa-img { position: absolute; inset: 0; }
 .mapa-img img, .mapa-img svg { width: 100%; height: 100%; display: block; object-fit: cover; }
 .coc-mapa-pos { position: absolute; left: 50%; width: 17%; transform: translateX(-50%); z-index: 3; pointer-events: none; }
 .coc-mapa { width: 100%; animation: flotar 3.4s ease-in-out infinite; filter: drop-shadow(0 0 14px rgba(255,214,77,.7)); }
@@ -216,9 +219,19 @@ p { margin: 0; text-wrap: pretty; }
 .zona-et .badge { min-width: 30px; height: 30px; padding: 0 6px; border-radius: var(--r-full); border: var(--borde); background: var(--ambar); color: var(--carbon); display: grid; place-items: center; font-family: var(--texto); font-size: var(--f-mini); font-weight: 600; }
 .zona-et .badge svg { width: 18px; height: 18px; }
 .zona-et .badge.cerrado { background: transparent; border: 0; color: var(--carbon-suave); min-width: 22px; padding: 0; }
+/* 2.6: las etiquetas son letreros de calle: pequeñas, translúcidas y sobre la acera, para que se vea la maqueta. Toda la manzana es zona de toque. */
+.mapa .zona-et { min-height: 30px; gap: 4px; padding: 0 11px; font-size: 14.5px; border-width: 2px; background: rgba(255, 251, 243, .84); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 2px 0 rgba(43,33,29,.55), 0 4px 10px rgba(43,33,29,.18); }
+.mapa .zona-et:active { box-shadow: 0 1px 0 rgba(43,33,29,.55); }
+.mapa .zona-et:has(.badge) { padding-right: 4px; }
+.mapa .zona-pin.encendida .zona-et, .mapa .zona-pin.completa .zona-et { background: color-mix(in srgb, var(--z) 90%, transparent); }
+.mapa .zona-pin.cerrada .zona-et { background: rgba(241, 235, 226, .78); box-shadow: none; }
+.mapa .zona-et .badge { min-width: 22px; height: 22px; padding: 0 5px; border-width: 1.5px; font-size: 12px; }
+.mapa .zona-et .badge svg { width: 14px; height: 14px; }
+.mapa .zona-et .badge.cerrado { min-width: 16px; padding: 0; }
 .vecino img { width: 100%; }
 .vecino { position: absolute; left: 14px; top: 18px; width: 54px; padding: 0; border: 0; background: none; z-index: 3; animation: flotar 4s ease-in-out infinite; }
 .flota-abajo { position: sticky; bottom: calc(var(--alto-nav) + env(safe-area-inset-bottom, 0px)); z-index: 18; padding: var(--e2) var(--lado-d) 36px var(--lado); margin-top: 0; }
+.mapa-marco > .flota-abajo { align-self: end; padding-bottom: 28px; }
 .seguir-tarjeta { display: flex; align-items: center; gap: var(--e3); padding: var(--e2) var(--e2) var(--e2) var(--e2); border-radius: var(--r-l); background: var(--blanco); border: var(--borde); box-shadow: var(--sombra-dura), var(--sombra-flota); text-decoration: none; color: var(--carbon); transition: transform .1s ease, box-shadow .1s ease; }
 .seguir-tarjeta:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--carbon), var(--sombra-flota); }
 .seguir-cara { width: 56px; height: 56px; flex: 0 0 56px; border-radius: var(--r-m); background: color-mix(in srgb, var(--z, var(--ambar)) 30%, #FFF); border: var(--borde); overflow: hidden; position: relative; }
@@ -567,20 +580,68 @@ figcaption { font-size: var(--f-mini); color: var(--carbon-suave); }
 
 /* ---------- Álbum: portada, índice y páginas ---------- */
 .album-portada { align-items: center; justify-content: center; gap: var(--e5); background: radial-gradient(70% 50% at 50% 40%, #FFE9B8 0%, var(--papel) 70%); }
-.libro { position: relative; width: min(78vw, 300px); aspect-ratio: 3 / 4; padding: 0; border: 0; background: none; perspective: 1400px; transition: transform .15s ease; }
+.libro { position: relative; width: min(74vw, 290px); aspect-ratio: 3 / 4; padding: 0; border: 0; background: none; perspective: 1600px; transition: transform .45s cubic-bezier(.4,0,.2,1); margin-bottom: 18px; }
 .libro:active { transform: scale(.98); }
-.libro-paginas { position: absolute; inset: 6px -10px -10px 10px; border-radius: 6px 20px 20px 6px; background: repeating-linear-gradient(90deg, #FFFDF8 0 3px, #EFE3CF 3px 4px); border: var(--borde); }
-.libro-tapa { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; gap: var(--e3); padding: var(--e6) var(--e5) var(--e5) var(--e7); border-radius: 8px 22px 22px 8px; border: var(--borde-marco); background: radial-gradient(circle at 70% 20%, #4E3E57 0%, var(--noche) 55%, var(--noche-2) 100%); color: var(--papel); box-shadow: 0 10px 0 rgba(43,33,29,.25), 0 18px 40px rgba(43,33,29,.3); transform-origin: left center; transition: transform .55s cubic-bezier(.5,0,.4,1); backface-visibility: hidden; overflow: hidden; }
-.libro.abierto .libro-tapa { transform: rotateY(-150deg); }
-.libro-lomo { position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: repeating-linear-gradient(180deg, #2A2130 0 14px, #34293B 14px 16px); border-right: 3px solid var(--carbon); }
-.libro-sello { display: inline-flex; align-items: center; min-height: 28px; padding: 0 var(--e3); border-radius: var(--r-full); background: var(--ambar); color: var(--carbon); font-size: var(--f-mini); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-.libro-titulo { font-family: var(--titulo); font-size: 34px; font-weight: 800; line-height: 1; text-align: center; letter-spacing: -.02em; color: var(--luz); text-shadow: 0 3px 0 rgba(0,0,0,.3); }
-.libro-coc { width: 44%; margin: auto 0; filter: drop-shadow(0 0 20px rgba(255,214,77,.6)); animation: flotar 3.2s ease-in-out infinite; }
-.libro-cuenta { font-size: var(--f-nota); color: var(--claro-suave); }
+.libro > span { position: absolute; display: block; }
+.libro-sombra { left: 4%; right: -6%; bottom: -22px; height: 34px; border-radius: 50%; background: radial-gradient(closest-side, rgba(43,33,29,.35), transparent); filter: blur(4px); }
+/* Bloque de páginas: se ven los cantos a la derecha y abajo, con hojas de varios tonos */
+.libro-paginas { inset: 5px -12px -12px 12px; border-radius: 6px 16px 18px 6px; border: var(--borde); background:
+  linear-gradient(180deg, transparent calc(100% - 12px), rgba(43,33,29,.08) calc(100% - 12px)),
+  repeating-linear-gradient(90deg, #FFFDF8 0 2px, #EEE1CA 2px 3px, #FFF8EC 3px 5px); box-shadow: inset -2px -2px 0 rgba(255,255,255,.6); }
+/* Primera página (se ve al abrir la tapa): un adelanto del índice */
+.libro-interior { inset: 0; border-radius: 6px 18px 18px 6px; border: var(--borde); background: radial-gradient(circle at 1px 1px, rgba(90,53,38,.14) 1px, transparent 1.5px) 0 0 / 14px 14px, linear-gradient(90deg, #EFE2CC, #FFF9EF 14%, #FFF9EF); display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; color: var(--carbon); }
+.interior-sello { font-family: var(--titulo); font-weight: 800; font-size: 22px; padding: 4px 14px; border: 2.5px solid var(--brasa); color: var(--brasa-texto); border-radius: 10px; transform: rotate(-4deg); }
+.interior-indice { display: grid; grid-template-columns: repeat(3, 34px); gap: 8px; }
+.interior-indice i { width: 34px; height: 42px; border-radius: 6px; background: var(--c); border: 2px solid var(--carbon); box-shadow: 0 2px 0 var(--carbon); }
+.interior-firma { font-size: 12px; text-align: center; color: var(--carbon-suave); border-top: 1.5px dashed var(--linea); padding-top: 8px; }
+.libro-hoja { inset: 2px 2px 2px 2px; border-radius: 6px 16px 16px 6px; background: linear-gradient(90deg, #E8D9BF, #FFFBF3 20%); border: 2px solid rgba(43,33,29,.5); transform-origin: left center; transition: transform .7s cubic-bezier(.5,0,.3,1); backface-visibility: visible; }
+.libro-tapa { inset: 0; transform-origin: left center; transform-style: preserve-3d; transition: transform .75s cubic-bezier(.55,0,.3,1); }
+.tapa-frente, .tapa-dorso { position: absolute; inset: 0; border-radius: 8px 22px 22px 8px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+/* Tapa: tela color ciruela con trama, costura dorada, esquinas de metal y lomo con nervios */
+.tapa-frente { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 26px 26px 30px 44px; border: var(--borde-marco); color: var(--papel); overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 75% 8%, rgba(255,214,77,.18), transparent 55%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 2px, transparent 2px 4px),
+    linear-gradient(160deg, #5A4766 0%, var(--noche) 48%, #2A2031 100%);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.12), inset -6px 0 12px rgba(0,0,0,.25), 0 8px 0 rgba(43,33,29,.28), 0 20px 40px rgba(43,33,29,.3); }
+.tapa-dorso { transform: rotateY(180deg); border: var(--borde-marco); background: radial-gradient(circle at 50% 50%, rgba(255,214,77,.35) 0 3px, transparent 3.5px) 0 0 / 22px 22px, radial-gradient(circle at 50% 50%, rgba(255,255,255,.25) 0 1.5px, transparent 2px) 11px 11px / 22px 22px, linear-gradient(135deg, #2F6B5A, #1F4E43); }
+.libro-lomo { position: absolute; left: 0; top: 0; bottom: 0; width: 26px; background:
+  linear-gradient(180deg, transparent 12%, rgba(255,255,255,.16) 12% 13.5%, rgba(0,0,0,.35) 13.5% 15%, transparent 15% 85%, rgba(255,255,255,.16) 85% 86.5%, rgba(0,0,0,.35) 86.5% 88%, transparent 88%),
+  linear-gradient(90deg, #1C1522, #3A2E44 55%, #241B2B); border-right: 3px solid var(--carbon); box-shadow: 3px 0 6px rgba(0,0,0,.25); }
+.tapa-costura { position: absolute; inset: 10px 10px 10px 36px; border: 2px dashed rgba(255,214,77,.5); border-radius: 4px 14px 14px 4px; pointer-events: none; }
+.tapa-esquina { position: absolute; right: -2px; width: 34px; height: 34px; background: linear-gradient(135deg, #FFE7A1, #E9A93A 55%, #B47417); border: 2px solid var(--carbon); }
+.tapa-esquina.arriba { top: -2px; clip-path: polygon(0 0, 100% 0, 100% 100%); border-radius: 0 20px 0 0; }
+.tapa-esquina.abajo { bottom: -2px; clip-path: polygon(100% 0, 100% 100%, 0 100%); border-radius: 0 0 20px 0; }
+.libro-sello { position: relative; display: inline-flex; align-items: center; min-height: 26px; padding: 0 12px; border-radius: var(--r-full); background: linear-gradient(180deg, #FFD15C, var(--ambar)); color: var(--carbon); border: 2px solid var(--carbon); box-shadow: 0 2px 0 var(--carbon); font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+/* Título en lámina dorada */
+.libro-titulo { position: relative; font-family: var(--titulo); font-size: 33px; font-weight: 800; line-height: .98; text-align: center; letter-spacing: -.02em; background: linear-gradient(180deg, #FFF3C4 10%, #FFD36A 45%, #E9A23A 70%, #FFE59A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 0 rgba(0,0,0,.45)); }
+/* Medallón con Cocuyo: aro dorado punteado que gira despacio y chispas que titilan */
+.libro-medalla { position: relative; width: 62%; aspect-ratio: 1; margin: auto 0; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle, rgba(255,214,77,.45) 0%, rgba(255,214,77,.12) 45%, transparent 70%); }
+.medalla-aro { position: absolute; inset: 4%; border-radius: 50%; border: 2px dashed rgba(255,214,77,.55); box-shadow: 0 0 0 6px rgba(255,214,77,.06); animation: girar-aro 40s linear infinite; }
+@keyframes girar-aro { to { transform: rotate(360deg); } }
+.medalla-chispa { position: absolute; width: 16px; animation: titilar 2.4s ease-in-out infinite; }
+.medalla-chispa svg { width: 100%; height: auto; display: block; }
+.medalla-chispa.c1 { left: 2%; top: 18%; } .medalla-chispa.c2 { right: 0; top: 8%; width: 12px; animation-delay: .8s; } .medalla-chispa.c3 { right: 6%; bottom: 14%; width: 14px; animation-delay: 1.5s; }
+@keyframes titilar { 50% { transform: scale(.55) rotate(20deg); opacity: .55; } }
+.libro-coc { width: 78%; filter: drop-shadow(0 0 18px rgba(255,214,77,.55)); animation: flotar 3.2s ease-in-out infinite; }
+/* Cromos pegados en la tapa, ladeados */
+.libro-pegado { position: absolute; width: 26px; height: 34px; border-radius: 4px; background: linear-gradient(160deg, rgba(255,255,255,.35), transparent 40%), var(--c); border: 2.5px solid #FFF8EA; box-shadow: 0 2px 4px rgba(0,0,0,.35); }
+.libro-pegado.p1 { left: 46px; top: 46%; transform: rotate(-12deg); }
+.libro-pegado.p2 { right: 22px; top: 52%; transform: rotate(10deg); }
+.libro-cuenta { position: relative; font-size: var(--f-nota); color: var(--claro-suave); }
 .libro-cuenta b { font-family: var(--titulo); font-size: 22px; color: var(--papel); }
-.libro-barra { width: 100%; height: 10px; border-radius: var(--r-full); background: rgba(255,250,242,.16); overflow: hidden; }
-.libro-barra i { display: block; height: 100%; min-width: 10px; border-radius: inherit; background: var(--ambar); }
-.album-portada > .btn { width: min(78vw, 300px); }
+.libro-barra { position: relative; width: 100%; height: 12px; border-radius: var(--r-full); background: rgba(0,0,0,.28); box-shadow: inset 0 2px 3px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.1); overflow: hidden; }
+.libro-barra i { display: block; height: 100%; min-width: 12px; border-radius: inherit; background: linear-gradient(180deg, #FFE08A, var(--ambar) 60%, #E39A12); }
+/* Cinta separadora que asoma por abajo */
+.libro-cinta { right: 64px; bottom: -26px; width: 16px; height: 44px; background: linear-gradient(90deg, #C2451C, var(--brasa) 45%, #C2451C); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); z-index: -1; transform-origin: top; animation: cinta 4s ease-in-out infinite; }
+@keyframes cinta { 50% { transform: rotate(4deg); } }
+/* Al abrir: la tapa gira, dos hojas la siguen y el libro avanza hacia el lector */
+.libro.abierto { transform: translateX(16%) scale(1.04); }
+.libro.abierto .libro-tapa { transform: rotateY(-168deg); }
+.libro.abierto .libro-hoja.h1 { transform: rotateY(-160deg); transition-delay: .14s; }
+.libro.abierto .libro-hoja.h2 { transform: rotateY(-150deg); transition-delay: .26s; }
+.album-portada > .btn { width: min(74vw, 290px); }
 .aviso-nuevo { display: inline-flex; align-items: center; gap: var(--e2); min-height: 36px; padding: 0 var(--e4); border-radius: var(--r-full); background: var(--carbon); color: var(--papel); font-size: var(--f-nota); font-weight: 500; }
 .aviso-nuevo b { color: var(--ambar); font-family: var(--titulo); font-size: 18px; }
 .secciones { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e3); }
@@ -628,10 +689,12 @@ figcaption { font-size: var(--f-mini); color: var(--carbon-suave); }
 .reto-cab { display: flex; flex-direction: column; gap: var(--e1); }
 .reto-cab p { color: var(--claro-suave); font-size: var(--f-chico); }
 .reto-frasco { display: flex; align-items: center; justify-content: center; gap: var(--e4); }
-.frasco { width: min(46vw, 190px); filter: drop-shadow(0 0 30px rgba(255,214,77,.25)); }
+.frasco { width: min(52vw, 210px); filter: drop-shadow(0 0 30px rgba(255,214,77,.25)); }
 .frasco .cf { animation: revolotea 3.4s ease-in-out calc(var(--k) * -.37s) infinite; }
 .frasco .cf.recien { animation: llega .9s cubic-bezier(.3,1.6,.5,1) both, revolotea 3.4s ease-in-out .9s infinite; }
 @keyframes revolotea { 0%, 100% { translate: 0 0; } 33% { translate: 3px -4px; } 66% { translate: -3px 2px; } }
+@keyframes alas { to { transform: scaleX(.72); } }
+.frasco .cf-alas { transform-box: fill-box; transform-origin: center bottom; animation: alas .18s ease-in-out infinite alternate; }
 @keyframes llega { 0% { opacity: 0; scale: 2.4; } 100% { opacity: 1; scale: 1; } }
 .frasco-cuenta { display: flex; flex-direction: column; align-items: flex-start; color: var(--claro-suave); font-size: var(--f-nota); line-height: 1.25; }
 .frasco-cuenta b { font-family: var(--titulo); font-size: 64px; font-weight: 800; line-height: .9; color: var(--luz); text-shadow: 0 0 22px rgba(255,214,77,.55); }
@@ -1019,7 +1082,8 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 .cromo-marco img.cromo-arte[src$="-cara.webp"] { width: 86%; border-radius: var(--r-m); }
 /* Cuerpo entero: se mide por la altura (la figura es alta y angosta). */
 .personaje.grande[src$=".webp"] { width: auto; height: 300px; }
-.vecino:has(img[src$=".webp"]) { width: max-content; top: 10px; }
+.vecino:has(img[src$=".webp"]) { width: max-content; top: auto; bottom: -14px; left: 44px; }
+.zona-pin.der .vecino:has(img[src$=".webp"]) { left: auto; right: 44px; }
 .vecino img[src$=".webp"] { width: auto; height: 70px; filter: drop-shadow(0 3px 3px rgba(43,33,29,.35)); }
 /* Episodio en plano medio: el personaje llena el lienzo y sus piernas pasan detrás de la hoja. */
 .ep-lienzo { container-type: size; }
