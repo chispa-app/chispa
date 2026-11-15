@@ -115,7 +115,7 @@
   CH.registrarJuego({
     id: 'detective', quien: 'seno-ines',
     como: { t: 'Lee pictogramas y gráficas, encuentra la gráfica tramposa, descubre qué le falta a una gráfica y arma la tuya. Todos los datos son ejemplos para practicar.' },
-    consejo: 'Para tres estrellas: lee la leyenda y el eje antes de responder.',
+    consejo: 'Para tres chispas: lee la leyenda y el eje antes de responder.',
     crear(api) {
       const preguntas = PLAN[api.n - 1]();
       if (api.experto && api.n < 8) preguntas.push(api.n < 5 ? Q.diferencia(api.n > 2 ? 2 : 1) : Q.trampa());

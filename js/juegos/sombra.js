@@ -39,7 +39,7 @@
   CH.registrarJuego({
     id: 'sombra', quien: 'don-abel',
     como: { t: 'Siembra árboles para dar sombra a las bancas, el paradero, los juegos y el camino al colegio. Cada árbol cubre su casilla y las cuatro de al lado. Usa los menos árboles posibles.' },
-    consejo: 'Para tres estrellas, busca casillas que den sombra a dos o tres lugares a la vez.',
+    consejo: 'Para tres chispas, busca casillas que den sombra a dos o tres lugares a la vez.',
     crear(api) {
       const m = NV[api.n - 1], F = m.length, C = m[0].length, opt = OPT[api.n - 1], tope = opt + 2;
       const arboles = new Set(), calientes = [];

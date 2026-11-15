@@ -71,7 +71,7 @@
   CH.registrarJuego({
     id: 'manglar', quien: 'tomas',
     como: { t: 'Siembra cada mangle en su franja y ayuda a los animales a volver a su casa en el manglar. Toca una ficha y después su lugar.' },
-    consejo: 'Para tres estrellas: piensa dónde vive cada uno antes de tocar.',
+    consejo: 'Para tres chispas: piensa dónde vive cada uno antes de tocar.',
     crear(api) {
       const cfg = NV[api.n - 1], sinPistas = cfg.sinPistas || (api.experto && api.n >= 6);
       const fichas = cfg.p.map((id, k) => ({ id, k, ...PIEZAS[id], puesta: false }));

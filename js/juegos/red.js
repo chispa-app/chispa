@@ -1,6 +1,6 @@
 /* Minijuego 5 · Red del barrio (Techos).
    Rompecabezas de cables: se toca una casilla para girarla hasta que la energía del panel (y del molino, al final)
-   llegue a todas las casas. Cada nivel se arma con semilla, siempre igual y con solución. Las estrellas premian
+   llegue a todas las casas. Cada nivel se arma con semilla, siempre igual y con solución. Las chispas premian
    girar poco, no la rapidez. */
 'use strict';
 (() => {
@@ -28,7 +28,7 @@
     ['Ahora las casas también giran.', 'Mira hacia dónde sale el cable de cada casa.'],
     ['Una red más grande.', 'Empieza por las esquinas: ahí hay menos caminos posibles.'],
     ['El panel está en la esquina.', 'Sigue la energía casilla por casilla.'],
-    ['¡Más casas!', 'Piensa antes de girar: menos giros, más estrellas.'],
+    ['¡Más casas!', 'Piensa antes de girar: menos giros, más chispas.'],
     ['Llegó un molino de viento.', 'La brisa también da energía, de día y de noche. Cada casa necesita una de las dos.'],
     ['¡El reto final!', 'Sol y viento para todo el barrio.']
   ];
@@ -51,8 +51,8 @@
 
   CH.registrarJuego({
     id: 'red', quien: 'vale',
-    como: { t: 'Toca los cables para girarlos y lleva la energía del panel solar a todas las casas del barrio. Gira lo menos posible para ganar tres estrellas.' },
-    consejo: 'Para tres estrellas, piensa antes de girar: cada toque cuenta.',
+    como: { t: 'Toca los cables para girarlos y lleva la energía del panel solar a todas las casas del barrio. Gira lo menos posible para ganar tres chispas.' },
+    consejo: 'Para tres chispas, piensa antes de girar: cada toque cuenta.',
     crear(api) {
       const cfg = NV[api.n - 1], { F, C } = cfg;
       const rnd = CH.semilla(7919 * api.n + 17);

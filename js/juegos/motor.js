@@ -1,6 +1,6 @@
 /* chispa 2.0 · motor de minijuegos.
-   Siete juegos de 8 niveles con 3 estrellas. Ninguno tiene tiempo límite: lo que se mueve se puede pausar
-   y vuelve a pasar; todo se resuelve tocando (arrastrar es opcional). Las estrellas premian pensar, no correr. */
+   Siete juegos de 8 niveles con 3 chispas. Ninguno tiene tiempo límite: lo que se mueve se puede pausar
+   y vuelve a pasar; todo se resuelve tocando (arrastrar es opcional). Las chispas premian pensar, no correr. */
 'use strict';
 (() => {
   const CH = window.CH, esc = CH.esc, I = CH.I, P = CH.prog;
@@ -11,7 +11,7 @@
   // Azar con semilla: el mismo nivel sale igual cada vez que se juega.
   CH.semilla = s => { let x = (s >>> 0) || 1; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 4294967296; }; };
   CH.mezclarCon = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-  CH.estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} estrellas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
+  CH.estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} chispas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
   const cara = quien => `<span class="jg-cara" aria-hidden="true">${quien === 'cocuyo' ? CH.cocuyo('feliz', 'jg-cara-img') : CH.personaje(quien, 'jg-cara-img')}</span>`;
   CH.caraHTML = cara;
 
@@ -120,8 +120,8 @@
       G[n] = Math.max(G[n] || 0, estrellas);
       const cromo = n === NIVELES && CH.ganarCromo('juego-' + def.id);
       CH.guardar();
-      const tit = estrellas === 3 ? CH.azar(['¡Perfecto!', '¡Tres estrellas!', '¡Lo hiciste genial!']) : estrellas === 2 ? '¡Nivel superado!' : '¡Lo lograste!';
-      const consejo = estrellas < 3 ? (def.consejo || 'Juégalo otra vez para ganar más estrellas.') : '';
+      const tit = estrellas === 3 ? CH.azar(['¡Perfecto!', '¡Tres chispas!', '¡Lo hiciste genial!']) : estrellas === 2 ? '¡Nivel superado!' : '¡Lo lograste!';
+      const consejo = estrellas < 3 ? (def.consejo || 'Juégalo otra vez para ganar más chispas.') : '';
       CH.sonido(cromo ? 'cromo' : 'estrella');
       ctrl.innerHTML = '';
       const m = hoja.querySelector('[data-msg]'); if (m) m.remove();
@@ -173,7 +173,7 @@
     if (todos) { const mejorable = [...Array(NIVELES)].map((_, i) => i + 1).find(k => G[k] < 3); sig = mejorable || NIVELES; }
     const nivelesHTML = [...Array(NIVELES)].map((_, i) => {
       const k = i + 1, e = G[k] || 0, abierto = P.nivelAbierto(id, k);
-      const et = !abierto ? `Nivel ${k}, se abre al superar el ${k - 1}` : e ? `Nivel ${k}, ${e} de 3 estrellas` : `Nivel ${k}, sin jugar`;
+      const et = !abierto ? `Nivel ${k}, se abre al superar el ${k - 1}` : e ? `Nivel ${k}, ${e} de 3 chispas` : `Nivel ${k}, sin jugar`;
       const dentroHTML = `<b>${k}</b>${abierto ? `<span class="mini-est" aria-hidden="true">${[0, 1, 2].map(j => j < e ? I.estrella : I.estrellaVacia).join('')}</span>` : `<span class="candado" aria-hidden="true">${I.candado}</span>`}`;
       return `<li>${abierto ? `<a class="nivel-j ${e ? 'jugado' : ''} ${k === sig ? 'sugerido' : ''}" href="#juego/${id}/${k}" aria-label="${et}">${dentroHTML}</a>` : `<span class="nivel-j cerrado" role="img" aria-label="${et}">${dentroHTML}</span>`}</li>`;
     }).join('');
@@ -184,7 +184,7 @@
       <div class="zona-heroe" aria-hidden="true">${CH.fondo(z.id, 'zona-fondo')}${quienFig}</div>
       <p class="como-j">${esc(CH.texto(def.como))}</p>
       <ol class="niveles-j" aria-label="Niveles">${nivelesHTML}</ol>
-      <p class="t-nota">${total} de ${NIVELES * 3} estrellas. Supera el nivel 8 y ganas un cromo.</p>
+      <p class="t-nota">${total} de ${NIVELES * 3} chispas. Supera el nivel 8 y ganas un cromo.</p>
       <a class="btn btn-primario" href="#juego/${id}/${sig}">${todos ? (G[sig] < 3 ? 'Mejorar el nivel ' + sig : 'Jugar el nivel 8 otra vez') : sig === 1 && !G[1] ? '¡A jugar!' : 'Jugar el nivel ' + sig}</a>
     </div>${CH.nav ? CH.nav('barrio') : ''}`, { voz: { t: def.info.nombre + '. ' + CH.texto(def.como) } });
   };

@@ -66,7 +66,7 @@
   CH.registrarJuego({
     id: 'banda', quien: 'cocuyo',
     como: { t: 'Las cosas de la casa llegan por una banda. Toca la caneca correcta: blanca, negra o verde. Lo sucio se enjuaga y lo peligroso va al punto especial.' },
-    consejo: 'Para tres estrellas: equivócate máximo una vez.',
+    consejo: 'Para tres chispas: equivócate máximo una vez.',
     crear(api) {
       const cfg = NV[api.n - 1], total = cfg.total + (api.experto && api.n > 1 ? 1 : 0);
       const R = Math.random;

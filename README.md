@@ -27,9 +27,11 @@ Ningún juego tiene tiempo límite. En el arroyo lo que se mueve se puede pausar
 ## Interfaz 2.2: un solo sistema de diseño
 - **Tokens** en `css/chispa.css` (`:root`): espacios de 4 en 4 (`--e1` a `--e8`), radios (`--r-s` 12, `--r-m` 16, `--r-l` 24, `--r-xl` 32), bordes, sombras, alturas de control (56 y 48) y escala de letra (34, 28, 22, 18, 16, 15, 13).
 - **Regla de la interfaz:** lo que se toca tiene borde oscuro y sombra dura (se «aprieta» al tocarlo); lo que solo informa tiene borde suave; lo bloqueado, borde punteado. Un solo botón primario (ámbar) por pantalla.
-- **Inicio:** mapa nuevo (`herramientas/mapa.py` arma `img/fondos/mapa-barrio.svg` con calles continuas, arroyo, faroles y árboles; reutiliza las viñetas de Figma de `herramientas/fuentes/`). El mapa va en línea: las zonas sin empezar se ven apagadas y los faroles se encienden con el avance.
+- **Inicio:** mapa en maqueta isométrica (`herramientas/maqueta.py` arma `img/fondos/mapa-barrio.svg`: manzanas con volumen, luz y sombra, calles con cebras, carros, faroles y el arroyo que pasa bajo la calle hasta la Ciénaga; las ventanas de cada zona se encienden con el avance). El mapa va en línea: las zonas sin empezar se ven apagadas y los faroles se encienden con el avance.
 - **Álbum:** libro con portada, índice de 9 secciones y una página por sección (`#album`, `#album/indice`, `#album/<zona>`).
 - **Reto:** frasco de cocuyos; cada día hecho enciende uno.
+- **Chispas:** la recompensa es una chispa (antes estrella) en toda la app.
+- **Barra inferior:** íconos a color; la pestaña activa sube en una burbuja de luz con chispitas.
 - **Cierre:** rayos, confeti, estrellas una por una, cromo que entra volteándose y avance de la zona, con concordancia («el parque brilla», «los techos brillan»).
 - **Clasificar:** el objeto va en una bandeja aparte; las canecas llevan su color.
 

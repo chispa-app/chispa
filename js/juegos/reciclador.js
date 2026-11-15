@@ -1,6 +1,6 @@
 /* Minijuego 2 · Ruta del reciclador (Cuadra).
    Rosa recoge las bolsas blancas (lo aprovechable) y las lleva a la estación de clasificación.
-   Se mueve tocando una casilla vecina o con las flechas. Las estrellas premian la ruta corta, nunca la rapidez.
+   Se mueve tocando una casilla vecina o con las flechas. Las chispas premian la ruta corta, nunca la rapidez.
    Desde el nivel 6 el carrito tiene un límite y hay que descargar en la estación a mitad de camino. */
 'use strict';
 (() => {
@@ -60,8 +60,8 @@
 
   CH.registrarJuego({
     id: 'reciclador', quien: 'rosa',
-    como: { t: 'Ayuda a Rosa a recoger las bolsas blancas de la cuadra y llevarlas a la estación de clasificación. Las estrellas son para la ruta más corta: piensa antes de caminar.' },
-    consejo: 'Para tres estrellas, busca una ruta más corta. Puedes deshacer pasos.',
+    como: { t: 'Ayuda a Rosa a recoger las bolsas blancas de la cuadra y llevarlas a la estación de clasificación. Las chispas son para la ruta más corta: piensa antes de caminar.' },
+    consejo: 'Para tres chispas, busca una ruta más corta. Puedes deshacer pasos.',
     crear(api) {
       const { m, cap } = MAPAS[api.n - 1], F = m.length, C = m[0].length;
       const opt = rutaMasCorta(m, cap);

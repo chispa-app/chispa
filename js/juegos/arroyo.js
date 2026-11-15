@@ -25,7 +25,7 @@
   CH.registrarJuego({
     id: 'arroyo', quien: 'lina',
     como: { t: 'Eres guardián de la trampa del arroyo. Toca la basura para sacarla del agua antes de que llegue a la ciénaga. Las hojas y semillas son de la naturaleza: déjalas pasar.' },
-    consejo: 'Para tres estrellas, toca solo la basura: deja pasar lo natural.',
+    consejo: 'Para tres chispas, toca solo la basura: deja pasar lo natural.',
     crear(api) {
       const [nb, nn, vel0, maxA, cada] = NV[api.n - 1];
       const vel = vel0 * (api.experto ? 1.1 : 1);

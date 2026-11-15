@@ -50,7 +50,7 @@ CH.cromos = () => {
   return L;
 };
 
-/* ---------- Casillero: accesorios que se abren con estrellas (sin tienda ni monedas) ---------- */
+/* ---------- Casillero: accesorios que se abren con chispas (sin tienda ni monedas) ---------- */
 CH.ACCESORIOS = [
   { id: 'gafas', n: 'Gafas de soldar', estrellas: 10, o: 'gafas' },
   { id: 'casco', n: 'Casco solar', estrellas: 25, o: 'casco' },

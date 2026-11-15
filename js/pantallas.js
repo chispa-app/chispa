@@ -5,13 +5,22 @@
   const nivelNombre = () => CH.E.nivel === 'experto' ? 'Experto' : 'Explorador';
 
   /* ---------- Navegación inferior ---------- */
+  // Íconos a color de la barra inferior (trazo café, como las ilustraciones).
+  const K = '#5A3526', T = `stroke="${K}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"`;
+  const ico = c => `<svg viewBox="0 0 32 32" aria-hidden="true">${c}</svg>`;
+  const NAV_ICO = {
+    barrio: ico(`<ellipse cx="16" cy="28" rx="13" ry="2.5" fill="#000" opacity=".12"/><path d="M22.5 27V12.5" stroke="${K}" stroke-width="1.8"/><circle cx="24.5" cy="11" r="5" fill="#4E9A68" ${T}/><path d="M5 15.5 13.5 8l8.5 7.5V27H5z" fill="#FFF0D6" ${T}/><path d="M3.5 16.5 13.5 7.2l10 9.3" fill="none" stroke="#E85D2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 16.5 13.5 7.2l10 9.3" fill="none" stroke="${K}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><rect x="7.5" y="17.5" width="5" height="4.5" rx="1" fill="#FFD34D" ${T}/><path d="M15 27v-6.5h4V27" fill="#8A5A3C" ${T}/>`),
+    album: ico(`<ellipse cx="16" cy="28.5" rx="12" ry="2.2" fill="#000" opacity=".12"/><path d="M8 4.5h17a1.5 1.5 0 0 1 1.5 1.5v20a1.5 1.5 0 0 1-1.5 1.5H8z" fill="#FFF8EA" ${T}/><path d="M6 4.5h17a1.5 1.5 0 0 1 1.5 1.5v18.5H6z" fill="#5B4BD6" ${T}/><path d="M6 4.5h3.5v20H6z" fill="#3A2E3F" ${T}/><rect x="12" y="9" width="9" height="10.5" rx="1.5" fill="#FFFFFF" ${T} transform="rotate(-6 16.5 14)"/><path d="M16.6 10.8l.9 2.2 2.2.4-1.7 1.4.5 2.3-1.9-1.2-2 1.1.6-2.2-1.6-1.6 2.2-.2z" fill="#FFB627" stroke="${K}" stroke-width=".9" stroke-linejoin="round"/>`),
+    reto: ico(`<ellipse cx="16" cy="29" rx="10" ry="2" fill="#000" opacity=".12"/><circle cx="16" cy="18.5" r="9" fill="#FFE58A" opacity=".55"/><path d="M11 8h10v2.5c4 1.5 5.5 4 5.5 7.5v7.5a2.5 2.5 0 0 1-2.5 2.5H8a2.5 2.5 0 0 1-2.5-2.5V18c0-3.5 1.5-6 5.5-7.5z" fill="#BFE3F2" fill-opacity=".75" ${T}/><rect x="10" y="4" width="12" height="4.5" rx="1.5" fill="#E85D2A" ${T}/><circle cx="13" cy="19" r="2.6" fill="#FFD34D" ${T}/><circle cx="19.5" cy="22.5" r="2" fill="#FFD34D" ${T}/><circle cx="18.5" cy="15" r="1.6" fill="#FFD34D" ${T}/><path d="M8.5 15c0-1.5 .8-2.6 2-3.2" stroke="#FFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>`),
+    casillero: ico(`<ellipse cx="16" cy="29" rx="11" ry="2" fill="#000" opacity=".12"/><rect x="6" y="3.5" width="20" height="24.5" rx="2.5" fill="#1F9E8F" ${T}/><rect x="9" y="6.5" width="14" height="18.5" rx="1.5" fill="#2BB8A6" ${T}/><path d="M11.5 9.5h9M11.5 12h9M11.5 14.5h9" stroke="${K}" stroke-width="1.5" stroke-linecap="round"/><rect x="18.5" y="17.5" width="3" height="5" rx="1.2" fill="#FFD34D" ${T}/><path d="M11.5 19.5l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z" fill="#FFFFFF" stroke="${K}" stroke-width=".9" stroke-linejoin="round" transform="translate(1 -1) scale(.85) translate(1.5 3)"/>`)
+  };
   const nav = actual => {
     const n = CH.E.nuevos.length;
-    const it = (h, txt, ic, extra = '') => `<a href="#${h}" ${actual === h ? 'aria-current="page"' : ''}>${I[ic]}<span>${txt}</span>${extra}</a>`;
+    const it = (h, txt, ic, extra = '') => `<a href="#${h}" ${actual === h ? 'aria-current="page"' : ''}><span class="nav-ico">${NAV_ICO[ic]}</span><span class="nav-txt">${txt}</span>${extra}</a>`;
     return `<nav class="nav" aria-label="Secciones">${it('barrio', 'Barrio', 'barrio')}${it('album', 'Álbum', 'album', n ? `<b class="insignia" aria-hidden="true">${n}</b><span class="solo-lector">, ${n} cromo${n > 1 ? 's' : ''} nuevo${n > 1 ? 's' : ''}</span>` : '')}${it('reto', 'Reto', 'reto')}${it('casillero', 'Casillero', 'casillero')}</nav>`;
   };
   CH.nav = nav;
-  const estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} estrellas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
+  const estrellasHTML = (n, max = 3) => `<span class="estrellas" role="img" aria-label="${n} de ${max} chispas">${Array.from({ length: max }, (_, i) => i < n ? I.estrella : I.estrellaVacia).join('')}</span>`;
 
   /* ================= APERTURA ================= */
   S.apertura = () => {
@@ -94,7 +103,7 @@
         <a class="mi-inventor" href="#casillero" aria-label="Mi casillero">${CH.avatar(CH.E.avatar, 'av-mini')}</a>
         <div class="crece"><b class="barra-nombre">${nivelNombre()}</b>
           <span class="barra-avance"><span class="segmentos" aria-hidden="true">${CH.ZONAS.map((z, k) => `<i class="${k < enc ? 'si' : ''}"></i>`).join('')}</span><span class="t-nota">${enc} de 8 zonas</span></span></div>
-        <span class="pildora" role="img" aria-label="${est} estrellas">${I.estrella}<b>${est}</b></span>
+        <span class="pildora" role="img" aria-label="${est} chispas">${I.estrella}<b>${est}</b></span>
       </header>
       <h1 class="solo-lector">Tu barrio: ${enc} de 8 zonas encendidas</h1>
       <div class="mapa" role="group" aria-label="Mapa del barrio">
@@ -129,12 +138,12 @@
       const hecho = CH.E.eps[ep.id], abierto = P.epAbierto(ep.id);
       const dentro = `<span class="num" aria-hidden="true">${hecho ? I.check : abierto ? i + 1 : I.candado}</span>
         <span class="crece"><b>${esc(ep.titulo)}</b>${hecho ? estrellasHTML(hecho.estrellas) : `<span class="t-nota">${abierto ? 'Listo para jugar' : 'Se abre al terminar el anterior'}</span>`}${ep.dorado ? '<span class="dorado-et">Cromo dorado</span>' : ''}</span>`;
-      return `<li>${abierto ? `<a class="ep-fila ${hecho ? 'hecho' : 'listo'}" href="#ep/${ep.id}" aria-label="${hecho ? 'Repetir' : 'Jugar'}: ${esc(ep.titulo)}${hecho ? ', ' + hecho.estrellas + ' de 3 estrellas' : ''}">${dentro}<span class="btn ${hecho ? 'btn-borde' : 'btn-primario'} btn-chico" aria-hidden="true">${hecho ? 'Repetir' : 'Jugar'}</span></a>`
+      return `<li>${abierto ? `<a class="ep-fila ${hecho ? 'hecho' : 'listo'}" href="#ep/${ep.id}" aria-label="${hecho ? 'Repetir' : 'Jugar'}: ${esc(ep.titulo)}${hecho ? ', ' + hecho.estrellas + ' de 3 chispas' : ''}">${dentro}<span class="btn ${hecho ? 'btn-borde' : 'btn-primario'} btn-chico" aria-hidden="true">${hecho ? 'Repetir' : 'Jugar'}</span></a>`
         : `<div class="ep-fila cerrado">${dentro}</div>`}</li>`;
     }).join('');
     const juego = J && CH.JUEGOS && CH.JUEGOS[J.id] ? (() => {
       const abierto = P.juegoAbierto(J.id), epJ = CH.epDeJuego(J.id), est = P.estrellasDe(J.id);
-      const nota = abierto ? `${est} de 24 estrellas` : `Se abre en el episodio ${ruta.indexOf(epJ) + 1}`;
+      const nota = abierto ? `${est} de 24 chispas` : `Se abre en el episodio ${ruta.indexOf(epJ) + 1}`;
       return `<section class="tarjeta juego-t ${abierto ? '' : 'cerrado'}"><span class="juego-ico" aria-hidden="true">${CH.ilus('objeto', J.o)}</span><div class="crece"><span class="t-nota">Minijuego · 8 niveles</span><b>${esc(J.nombre)}</b><span class="t-nota">${nota}</span></div>${abierto ? `<a class="btn btn-borde btn-chico" href="#juego/${J.id}" aria-label="Jugar ${esc(J.nombre)}">Jugar</a>` : `<span class="candado-j" aria-hidden="true">${I.candado}</span>`}</section>`;
     })() : '';
     CH.pintar(`<div class="pantalla zona-p" style="--z:${z.color};--zt:${z.tinta}">
@@ -186,7 +195,7 @@
       <div class="cierre-cab">${CH.cocuyo('celebrando', 'coc-cierre')}
         <h1 class="t-display claro">${esc(titulo)}</h1>
         <p class="claro suave">Terminaste el episodio ${i}: ${esc(ep.titulo)}${/[?!]$/.test(ep.titulo) ? '' : '.'}</p>
-        <span class="estrellas cierre-estrellas" role="img" aria-label="${estrellas} de 3 estrellas">${[0, 1, 2].map(k => `<span style="--k:${k}">${k < estrellas ? I.estrella : I.estrellaVacia}</span>`).join('')}</span></div>
+        <span class="estrellas cierre-estrellas" role="img" aria-label="${estrellas} de 3 chispas">${[0, 1, 2].map(k => `<span style="--k:${k}">${k < estrellas ? I.estrella : I.estrellaVacia}</span>`).join('')}</span></div>
       ${cromo ? `<div class="cierre-cromo">${cromoNuevo ? '<span class="cinta-nuevo">¡Cromo nuevo!</span>' : ''}<button class="cromo-t ${cromo.tipo} ${cromoNuevo ? 'aparece' : ''}" data-voltear aria-label="Cromo: ${esc(cromo.t)}. Toca para ver el dato.">${cromoHTML(cromo)}<span class="cromo-brillo" aria-hidden="true"></span></button></div>` : ''}
       ${!fin ? `<div class="cierre-avance"><span class="segmentos" aria-hidden="true">${CH.RUTAS[zona].map(e => `<i class="${CH.E.eps[e.id] ? 'si' : ''}"></i>`).join('')}</span><span>${esc(mayus(z.nombre))} · ${n} de ${t} · ${esc(avance)}</span></div>` : ''}
       ${sorpresa ? `<p class="aviso-claro">${CH.personaje(sorpresa.p, 'mini-cara')}<span><b>¡Sorpresa!</b> ${esc(sorpresa.dato)} Búscalo en tu mapa.</span></p>` : ''}
@@ -378,9 +387,9 @@
     const todosEps = CH.ZONAS.flatMap(z => CH.RUTAS[z.id]);
     CH.pintar(`<div class="pantalla">
       <h1 class="t-titulo">Mi casillero</h1>
-      <section class="casillero-yo">${CH.avatar(CH.E.avatar, 'av-grande')}<div><b>${nivelNombre()}</b><span class="pildora">${I.estrella}<b>${est}</b> estrellas</span><button class="btn btn-borde btn-chico" data-cambiar aria-label="Cambiar inventor o edad">Cambiar</button></div></section>
-      <section><h2 class="t-sub">Accesorios</h2><p class="t-nota">Se abren con estrellas. No hay tienda ni monedas.</p>
-        <ul class="accesorios">${CH.ACCESORIOS.map(a => { const ok = est >= a.estrellas; return `<li><button class="acc ${ok ? '' : 'cerrado'}" ${ok ? '' : 'disabled'} data-acc="${a.id}" aria-pressed="${CH.E.accesorio === a.id}">${CH.ilus('objeto', a.o)}<span>${esc(a.n)}</span><small>${ok ? (CH.E.accesorio === a.id ? 'Puesto' : 'Ponerlo') : a.estrellas + ' estrellas'}</small></button></li>`; }).join('')}</ul></section>
+      <section class="casillero-yo">${CH.avatar(CH.E.avatar, 'av-grande')}<div><b>${nivelNombre()}</b><span class="pildora">${I.estrella}<b>${est}</b> chispas</span><button class="btn btn-borde btn-chico" data-cambiar aria-label="Cambiar inventor o edad">Cambiar</button></div></section>
+      <section><h2 class="t-sub">Accesorios</h2><p class="t-nota">Se abren con chispas. No hay tienda ni monedas.</p>
+        <ul class="accesorios">${CH.ACCESORIOS.map(a => { const ok = est >= a.estrellas; return `<li><button class="acc ${ok ? '' : 'cerrado'}" ${ok ? '' : 'disabled'} data-acc="${a.id}" aria-pressed="${CH.E.accesorio === a.id}">${CH.ilus('objeto', a.o)}<span>${esc(a.n)}</span><small>${ok ? (CH.E.accesorio === a.id ? 'Puesto' : 'Ponerlo') : a.estrellas + ' chispas'}</small></button></li>`; }).join('')}</ul></section>
       <section><h2 class="t-sub">Misiones en casa</h2>${misiones.length ? `<ul class="lista-misiones">${misiones.map(id => { const ep = todosEps.find(e => e.id === id), m = ep && ep.pasos.find(p => p.tipo === 'mision'); const t = m ? (CH.E.nivel === 'experto' && m.x ? m.x : m.t) : ''; const ok = CH.E.misiones[id]; return `<li class="tarjeta"><p class="t-nota">${esc(ep ? ep.titulo : '')}</p><p>${esc(t)}</p><button class="btn ${ok ? 'btn-borde' : 'btn-oscuro'} btn-chico" data-mision="${id}" aria-pressed="${ok}">${ok ? '¡Hecha!' : 'La hicimos'}</button></li>`; }).join('')}</ul>` : '<p class="t-nota">Aparecen al terminar la última parte de cada ruta.</p>'}</section>
       <section class="fila-enlaces"><a class="btn btn-borde" href="#manglar">${I.hoja}Mi manglar</a><a class="btn btn-borde" href="#bitacora">${I.reto}Bitácora</a><a class="btn btn-borde" href="#galeria">${I.lapiz}Galería</a></section>
     </div>${nav('casillero')}`);
@@ -458,7 +467,7 @@
     CH.pintar(`<div class="pantalla adultos">
       <div class="barra"><a class="btn-redondo" href="#barrio" aria-label="Volver al barrio">${I.atras}</a><div class="crece"><h1 class="t-titulo">Para adultos</h1><span class="t-nota">Familias y docentes</span></div></div>
       <nav class="indice-chips" aria-label="Secciones">${[['progreso', 'Progreso'], ['ajustes', 'Ajustes'], ['familia', 'Familia'], ['aula', 'Modo aula'], ['aprende', 'Qué aprende'], ['privacidad', 'Privacidad'], ['fuentes', 'Fuentes']].map(([h, t]) => `<a class="chip" href="#adultos" data-ir="${h}">${t}</a>`).join('')}</nav>
-      <section id="s-progreso" class="tarjeta"><h2>Progreso</h2><div class="stats"><div><b>${P.zonasEncendidas()} de 8</b><span>zonas encendidas</span></div><div><b>${Object.keys(CH.E.eps).length} de 33</b><span>episodios</span></div><div><b>${CH.E.cromos.length}</b><span>cromos</span></div><div><b>${Object.keys(CH.E.reto).length} de 14</b><span>días del reto</span></div><div><b>${P.nivelesSuperados ? P.nivelesSuperados() : 0} de 56</b><span>niveles de minijuegos</span></div><div><b>${P.estrellas()}</b><span>estrellas en total</span></div></div></section>
+      <section id="s-progreso" class="tarjeta"><h2>Progreso</h2><div class="stats"><div><b>${P.zonasEncendidas()} de 8</b><span>zonas encendidas</span></div><div><b>${Object.keys(CH.E.eps).length} de 33</b><span>episodios</span></div><div><b>${CH.E.cromos.length}</b><span>cromos</span></div><div><b>${Object.keys(CH.E.reto).length} de 14</b><span>días del reto</span></div><div><b>${P.nivelesSuperados ? P.nivelesSuperados() : 0} de 56</b><span>niveles de minijuegos</span></div><div><b>${P.estrellas()}</b><span>chispas en total</span></div></div></section>
       <section id="s-ajustes"><h2>Ajustes</h2><div class="lista-ajustes">
         ${sw('voz', 'Voz de Cocuyo y sonidos')}${sw('vozLenta', 'Voz más lenta')}${sw('letra', 'Letra más grande')}${sw('movimiento', 'Menos movimiento')}${sw('sinTiempo', 'Juegos sin tiempo', 'Los minijuegos esperan sin apurar.')}
         <div class="ajuste"><span><b id="aj-lim">Episodios nuevos por día</b><small>Después, Cocuyo propone descansar.</small></span><div class="paso-c"><button class="btn-redondo" data-lim="-1" aria-label="Menos">−</button><output aria-labelledby="aj-lim">${aj.limite}</output><button class="btn-redondo" data-lim="1" aria-label="Más">+</button></div></div>
