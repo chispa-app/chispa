@@ -11,7 +11,7 @@ CH.ZONAS = [
   { id: 'techos', nombre: 'Techos', tema: 'Energía del sol y del viento', color: '#FFB627', tinta: '#2B211D', quien: 'vale', quienNombre: 'Vale, técnica solar', juego: 'red', mapa: { x: 19.5, y: 54.7 }, bloque: [0, 40.4, 38.5, 54.9] },
   { id: 'parque', nombre: 'Parque', tema: 'Calor, sombra y árboles', color: '#1F7A5C', tinta: '#FFFFFF', quien: 'don-abel', quienNombre: 'Don Abel, jardinero', juego: 'sombra', mapa: { x: 80.5, y: 54.7 }, bloque: [61, 40.4, 100, 54.9] },
   { id: 'colegio', nombre: 'Colegio', tema: 'Detectives de datos', color: '#5B4BD6', tinta: '#FFFFFF', quien: 'seno-ines', quienNombre: 'La seño Inés', juego: 'detective', mapa: { x: 19.5, y: 72.6 }, bloque: [0, 57.6, 38.5, 73] },
-  { id: 'plaza', nombre: 'Plaza', tema: 'Taller de inventores', color: '#3A2E3F', tinta: '#FFFFFF', quien: 'cocuyo', quienNombre: 'Cocuyo', juego: 'taller', mapa: { x: 80.5, y: 72.6 }, bloque: [61, 57.6, 100, 73] }
+  { id: 'plaza', nombre: 'Plaza', tema: 'Taller de inventores', color: '#3A2E3F', tinta: '#FFFFFF', quien: 'julian', quienNombre: 'Julián, inventor', juego: 'taller', mapa: { x: 80.5, y: 72.6 }, bloque: [61, 57.6, 100, 73] }
 ];
 
 CH.PERSONAJES = {
@@ -22,7 +22,8 @@ CH.PERSONAJES = {
   tomas: { nombre: 'Tomás', oficio: 'Pescador' },
   vale: { nombre: 'Vale', oficio: 'Técnica solar' },
   'don-abel': { nombre: 'Don Abel', oficio: 'Jardinero' },
-  'seno-ines': { nombre: 'Seño Inés', oficio: 'Profesora' }
+  'seno-ines': { nombre: 'Seño Inés', oficio: 'Profesora' },
+  julian: { nombre: 'Julián', oficio: 'Inventor de la plaza' }
 };
 
 CH.AVATARES = [

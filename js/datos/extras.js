@@ -36,7 +36,8 @@ CH.SORPRESAS = [
   { id: 'sorpresa-cienaga', zona: 'cienaga', p: 'tomas', t: 'Tomás en su canoa', dato: 'Tomás cuida la ciénaga que ayudaste a limpiar.' },
   { id: 'sorpresa-techos', zona: 'techos', p: 'vale', t: 'Vale en los techos', dato: 'Vale encendió los paneles de tu barrio.' },
   { id: 'sorpresa-parque', zona: 'parque', p: 'don-abel', t: 'Don Abel siembra', dato: 'Don Abel sembró un árbol con tu nombre de inventor.' },
-  { id: 'sorpresa-colegio', zona: 'colegio', p: 'seno-ines', t: 'La seño Inés', dato: 'La seño Inés pegó tu infografía en el salón.' }
+  { id: 'sorpresa-colegio', zona: 'colegio', p: 'seno-ines', t: 'La seño Inés', dato: 'La seño Inés pegó tu infografía en el salón.' },
+  { id: 'sorpresa-plaza', zona: 'plaza', p: 'julian', t: 'Julián en su taller', dato: 'Julián guardó tu boceto en la vitrina del taller.' }
 ];
 CH.cromos = () => {
   const L = [];

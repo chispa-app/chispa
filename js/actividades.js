@@ -112,7 +112,7 @@
       const lienzo = CH.$main.querySelector('[data-lienzo]'), hoja = CH.$main.querySelector('[data-hoja]');
       const ctx = {
         p, ep, zona, Z, lienzo, hoja, nivel,
-        quien: p.quien || (Z.id === 'casa' || Z.id === 'plaza' ? 'cocuyo' : Z.quien),
+        quien: p.quien || (Z.id === 'casa' ? 'cocuyo' : Z.quien),
         // Personaje con globo en el lienzo.
         actor(l, quien = ctx.quien, exp = 'feliz') {
           const fig = quien === 'cocuyo' ? CH.cocuyo(exp, 'actor-fig') : CH.personaje(quien, 'actor-fig');

@@ -73,28 +73,28 @@ CH.RUTAS.plaza = [
     id: 'plaza-1', titulo: 'Copiar a la naturaleza',
     cromo: { t: 'Luz fría', o: 'luciernaga', dato: 'La luz de la luciérnaga casi no produce calor.', f: 'luciernaga' },
     pasos: [
-      { tipo: 'escena', quien: 'cocuyo', lineas: [
-        { t: '¡Bienvenido al taller de inventores!', exp: 'celebrando' },
-        { t: 'Muchos inventos copian ideas de la naturaleza. Se llama biomimética.', exp: 'curioso' }
+      { tipo: 'escena', quien: 'julian', lineas: [
+        { t: '¡Bienvenido al taller de inventores! Soy Julián y aquí inventamos con lo que tenemos.' },
+        { t: 'Muchos inventos copian ideas de la naturaleza. Se llama biomimética.' }
       ] },
-      { tipo: 'une', quien: 'cocuyo', pide: { t: 'Une cada invento con lo que lo inspiró.' },
+      { tipo: 'une', quien: 'julian', pide: { t: 'Une cada invento con lo que lo inspiró.' },
         pares: [
           { a: { o: 'velcro', n: 'El velcro' }, b: { o: 'cadillo', n: 'Semillas que se pegan a la ropa' }, e: 'Tienen ganchitos que se enganchan.' },
           { a: { o: 'tren', n: 'La nariz del tren bala' }, b: { o: 'martin', n: 'El pico del martín pescador' }, e: 'Entra al agua sin salpicar.' },
           { a: { o: 'edificio', n: 'Un edificio que se refresca solo' }, b: { o: 'termitero', n: 'Los montículos de las termitas' }, e: 'Por dentro circula el aire.' },
           { a: { o: 'ventana', n: 'Vidrio que las aves ven' }, b: { o: 'arana', n: 'La tela de araña' }, e: 'Refleja una luz que las aves sí ven.' }
         ], fuente: 'biomimetica' },
-      { tipo: 'dato', pide: { t: '¿Cuánto calor produce la luz de una luciérnaga como yo?' }, ops: ['Mucho, como un bombillo viejo', 'Casi nada', 'Tanto como una vela'], r: 1,
+      { tipo: 'dato', quien: 'cocuyo', pide: { t: '¿Cuánto calor produce la luz de una luciérnaga como yo?' }, ops: ['Mucho, como un bombillo viejo', 'Casi nada', 'Tanto como una vela'], r: 1,
         revela: { t: 'Casi nada: es luz fría. Los inventores la estudian para hacer luces que gasten menos.' }, fuente: 'luciernaga' }
     ]
   },
   {
     id: 'plaza-2', titulo: 'Un problema del barrio',
-    cromo: { t: 'El problema', o: 'lupa', dato: 'Los inventores empiezan con un problema, no con una máquina.', f: null },
+    cromo: { t: 'Julián', p: 'julian', dato: 'Los inventores empiezan con un problema, no con una máquina.', f: null },
     pasos: [
-      { tipo: 'escena', quien: 'cocuyo', lineas: [
-        { t: 'Los inventores no empiezan con una máquina. Empiezan con un problema.', exp: 'pensando' },
-        { t: 'Ya recorriste el barrio. ¿Qué problema quieres resolver?', exp: 'curioso' }
+      { tipo: 'escena', quien: 'julian', lineas: [
+        { t: 'Los inventores no empiezan con una máquina. Empiezan con un problema.' },
+        { t: 'Ya recorriste el barrio. ¿Qué problema quieres resolver?' }
       ] },
       { tipo: 'elige', guarda: 'problema', pide: { t: 'Elige el problema de tu invento.' }, ops: [
         { t: 'Basura que tapa los arroyos', o: 'sumidero', r: { t: '¡Buen problema! Así cuidamos la ciénaga.' } },
@@ -123,11 +123,11 @@ CH.RUTAS.plaza = [
     id: 'plaza-4', titulo: 'A prueba',
     cromo: { t: 'A prueba', o: 'lluvia', dato: 'Probar y mejorar es parte de inventar.', f: null },
     pasos: [
-      { tipo: 'escena', quien: 'cocuyo', lineas: [
-        { t: 'Ningún invento sale perfecto a la primera. Hay que probarlo.', exp: 'pensando' },
-        { t: 'Vamos a probar el tuyo con lluvia, con sol y de noche.', exp: 'senalando' }
+      { tipo: 'escena', quien: 'julian', lineas: [
+        { t: 'Ningún invento sale perfecto a la primera. Yo tuve que arreglar mi molino tres veces.' },
+        { t: 'Vamos a probar el tuyo con lluvia, con sol y de noche.' }
       ] },
-      { tipo: 'charla', quien: 'cocuyo', pide: '¿Cómo lo mejoras?', nodos: [
+      { tipo: 'charla', quien: 'julian', pide: '¿Cómo lo mejoras?', nodos: [
         { dice: { t: '¡Llueve fuerte! ¿Qué le pasa a tu invento?' }, exp: 'sorprendido', ops: [
           { t: 'Le pongo un techito para que no se moje.', ok: 1, r: { t: '¡Buena mejora! Resiste la lluvia.' } },
           { t: 'Lo pongo al lado del arroyo para probarlo.', r: { t: '¡No! Con lluvia, lejos del arroyo. Busca otra idea.' } }
@@ -147,9 +147,9 @@ CH.RUTAS.plaza = [
     id: 'plaza-5', titulo: 'La feria del barrio', dorado: true,
     cromo: { t: 'Inventor del barrio', o: 'cocuyo', dato: '¡Encendiste el barrio entero!', f: null },
     pasos: [
-      { tipo: 'escena', quien: 'cocuyo', lineas: [
-        { t: '¡Hoy es la feria del barrio! Todos vienen a ver los inventos.', exp: 'celebrando' },
-        { t: 'Este es el cartel de tu invento.', exp: 'senalando' }
+      { tipo: 'escena', quien: 'julian', lineas: [
+        { t: '¡Hoy es la feria del barrio! Todos vienen a ver los inventos.' },
+        { t: 'Este es el cartel de tu invento. Lo pusimos en la mejor mesa de la plaza.' }
       ] },
       { tipo: 'cartel', pide: { t: 'Tu cartel para la feria.' } },
       { tipo: 'escena', quien: 'cocuyo', lineas: [
