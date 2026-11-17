@@ -5,14 +5,15 @@
   const nivelNombre = () => CH.E.nivel === 'experto' ? 'Experto' : 'Explorador';
 
   /* ---------- Navegación inferior ---------- */
-  // Íconos a color de la barra inferior (trazo café, como las ilustraciones).
+  // Íconos a color de la barra inferior, en el mismo estilo de ilustración simple del álbum (2.7):
+  // barrio = una casita con su árbol y farol, reto = el frasco con cocuyos, casillero = la chispa que se gana.
   const K = '#5A3526', T = `stroke="${K}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"`;
   const ico = c => `<svg viewBox="0 0 32 32" aria-hidden="true">${c}</svg>`;
   const NAV_ICO = {
-    barrio: ico(`<ellipse cx="16" cy="28" rx="13" ry="2.5" fill="#000" opacity=".12"/><path d="M22.5 27V12.5" stroke="${K}" stroke-width="1.8"/><circle cx="24.5" cy="11" r="5" fill="#4E9A68" ${T}/><path d="M5 15.5 13.5 8l8.5 7.5V27H5z" fill="#FFF0D6" ${T}/><path d="M3.5 16.5 13.5 7.2l10 9.3" fill="none" stroke="#E85D2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 16.5 13.5 7.2l10 9.3" fill="none" stroke="${K}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><rect x="7.5" y="17.5" width="5" height="4.5" rx="1" fill="#FFD34D" ${T}/><path d="M15 27v-6.5h4V27" fill="#8A5A3C" ${T}/>`),
+    barrio: ico(`<ellipse cx="16" cy="28.6" rx="13.5" ry="2.4" fill="#000" opacity=".12"/><path d="M2.8 25.5c0-1.4 1.1-2.5 2.5-2.5h21.4c1.4 0 2.5 1.1 2.5 2.5v.5a2 2 0 0 1-2 2H4.8a2 2 0 0 1-2-2z" fill="#6FB25E" ${T}/><path d="M25 23.5V13.6" stroke="${K}" stroke-width="1.6" stroke-linecap="round"/><circle cx="25" cy="11.8" r="4.4" fill="#4E9A68" ${T}/><circle cx="23.6" cy="10.6" r="1.3" fill="#7CC27A"/><path d="M5.5 14.5 12.5 8.6l7 5.9V24h-14z" fill="#F6E3C8" ${T}/><path d="M3.6 15.6 12.5 7.4l8.9 8.2" fill="none" stroke="#D9673E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.6 15.6 12.5 7.4l8.9 8.2" fill="none" stroke="${K}" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/><circle cx="9.6" cy="18.3" r="3.6" fill="#FFD34D" opacity=".35"/><rect x="7.6" y="16.4" width="4" height="3.8" rx=".8" fill="#FFD34D" ${T} stroke-width="1.2"/><path d="M14.2 24v-5.2a1 1 0 0 1 1-1h1.6a1 1 0 0 1 1 1V24" fill="#2F7A5A" ${T} stroke-width="1.2"/><path d="M28.6 23.5V16.8" stroke="${K}" stroke-width="1.2" stroke-linecap="round"/><circle cx="28.6" cy="16" r="2.6" fill="#FFD34D" opacity=".4"/><circle cx="28.6" cy="16" r="1.1" fill="#FFE58A" stroke="${K}" stroke-width=".8"/>`),
     album: ico(`<ellipse cx="16" cy="28.8" rx="12" ry="2.2" fill="#000" opacity=".12"/><path d="M19 25.5v5l1.4-1.3 1.4 1.3v-5z" fill="#E85D2A" ${T}/><path d="M8 5.5h16.5a2 2 0 0 1 2 2V25a2 2 0 0 1-2 2H8z" fill="#FFF8EA" ${T}/><path d="M5 4h17.5a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H5z" fill="#4A3B52" ${T}/><path d="M5 4h3.6v22H5z" fill="#2A2031" ${T}/><path d="M5.8 7.5h2M5.8 22.5h2" stroke="#8C7898" stroke-width="1.1" stroke-linecap="round"/><rect x="10.6" y="6.3" width="12" height="17.4" rx="1.3" fill="none" stroke="#FFC94D" stroke-width=".9" stroke-dasharray="1.5 1.2"/><path d="M20.3 4h2.2a2 2 0 0 1 2 2v2.2z" fill="#F2B13A" stroke="${K}" stroke-width="1.1" stroke-linejoin="round"/><circle cx="16.6" cy="15.2" r="5" fill="#FFD34D" opacity=".32"/><ellipse cx="14.2" cy="13.6" rx="1.8" ry="1.15" fill="#FFFFFF" fill-opacity=".85" stroke="${K}" stroke-width=".7" transform="rotate(-25 14.2 13.6)"/><ellipse cx="19" cy="13.6" rx="1.8" ry="1.15" fill="#FFFFFF" fill-opacity=".85" stroke="${K}" stroke-width=".7" transform="rotate(25 19 13.6)"/><circle cx="16.6" cy="16.6" r="2.6" fill="#FFE58A" stroke="${K}" stroke-width="1.1"/><circle cx="16.6" cy="12.2" r="1.9" fill="#D9673E" stroke="${K}" stroke-width="1"/><path d="M12.8 20.8h7.6" stroke="#FFC94D" stroke-width="1.4" stroke-linecap="round"/>`),
-    reto: ico(`<ellipse cx="16" cy="29" rx="10" ry="2" fill="#000" opacity=".12"/><circle cx="16" cy="18.5" r="9" fill="#FFE58A" opacity=".55"/><path d="M11 8h10v2.5c4 1.5 5.5 4 5.5 7.5v7.5a2.5 2.5 0 0 1-2.5 2.5H8a2.5 2.5 0 0 1-2.5-2.5V18c0-3.5 1.5-6 5.5-7.5z" fill="#BFE3F2" fill-opacity=".75" ${T}/><rect x="10" y="4" width="12" height="4.5" rx="1.5" fill="#E85D2A" ${T}/><circle cx="13" cy="19" r="2.6" fill="#FFD34D" ${T}/><circle cx="19.5" cy="22.5" r="2" fill="#FFD34D" ${T}/><circle cx="18.5" cy="15" r="1.6" fill="#FFD34D" ${T}/><path d="M8.5 15c0-1.5 .8-2.6 2-3.2" stroke="#FFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>`),
-    casillero: ico(`<ellipse cx="16" cy="29" rx="11" ry="2" fill="#000" opacity=".12"/><rect x="6" y="3.5" width="20" height="24.5" rx="2.5" fill="#1F9E8F" ${T}/><rect x="9" y="6.5" width="14" height="18.5" rx="1.5" fill="#2BB8A6" ${T}/><path d="M11.5 9.5h9M11.5 12h9M11.5 14.5h9" stroke="${K}" stroke-width="1.5" stroke-linecap="round"/><rect x="18.5" y="17.5" width="3" height="5" rx="1.2" fill="#FFD34D" ${T}/><path d="M11.5 19.5l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z" fill="#FFFFFF" stroke="${K}" stroke-width=".9" stroke-linejoin="round" transform="translate(1 -1) scale(.85) translate(1.5 3)"/>`)
+    reto: ico(`<ellipse cx="16" cy="29.2" rx="10.5" ry="2" fill="#000" opacity=".12"/><circle cx="16" cy="20" r="10" fill="#FFE58A" opacity=".35"/><path d="M11.4 9.6h9.2v1.6c3.6 1.4 5.3 3.8 5.3 7v7.4a2.6 2.6 0 0 1-2.6 2.6H8.7a2.6 2.6 0 0 1-2.6-2.6v-7.4c0-3.2 1.7-5.6 5.3-7z" fill="#3A4E66" ${T}/><path d="M6.6 23.4c3-1.5 6-.6 9.4-1.2 3.4-.6 6.4-.4 9.4.4v2.6a2.6 2.6 0 0 1-2.6 2.6H8.7a2.6 2.6 0 0 1-2.1-1.1z" fill="#4E9A68"/><path d="M8.6 21.5c4-2.4 8.4-2.2 13.4-5.6" stroke="#8A5A3C" stroke-width="1.4" stroke-linecap="round" fill="none"/><circle cx="12.4" cy="17.6" r="3" fill="#FFD34D" opacity=".45"/><circle cx="12.4" cy="17.6" r="1.4" fill="#FFE58A" stroke="${K}" stroke-width=".8"/><circle cx="19.6" cy="21.4" r="2.6" fill="#FFD34D" opacity=".45"/><circle cx="19.6" cy="21.4" r="1.2" fill="#FFE58A" stroke="${K}" stroke-width=".8"/><circle cx="20.4" cy="14.4" r="2.2" fill="#FFD34D" opacity=".4"/><circle cx="20.4" cy="14.4" r="1" fill="#FFE58A" stroke="${K}" stroke-width=".7"/><path d="M9 15.6c0-1.6.8-2.8 2.1-3.4M8.4 18.4v3" stroke="#FFF" stroke-opacity=".7" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M11.2 5.2C11 1.6 21 1.6 20.8 5.2" fill="none" stroke="${K}" stroke-width="1.2" stroke-linecap="round"/><rect x="9.6" y="5" width="12.8" height="5" rx="1.6" fill="#E85D2A" ${T}/><path d="M12.4 6.2v2.6M14.8 6.2v2.6M17.2 6.2v2.6M19.6 6.2v2.6" stroke="#9C3417" stroke-width=".9" stroke-linecap="round"/>`),
+    casillero: ico(`<ellipse cx="16" cy="29.4" rx="9" ry="1.8" fill="#000" opacity=".12"/><circle cx="16" cy="15.6" r="12" fill="#FFD34D" opacity=".3"/><g transform="translate(1.6 .6) scale(1.2)">${(I.estrella.match(/<svg[^>]*>([\s\S]*)<\/svg>/) || ['', ''])[1]}</g><path d="M26.6 4.2l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z" fill="#FFE58A" stroke="${K}" stroke-width=".6" stroke-linejoin="round"/><path d="M4.6 22.4l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5z" fill="#FFE58A" stroke="${K}" stroke-width=".5" stroke-linejoin="round"/>`)
   };
   const nav = actual => {
     const n = CH.E.nuevos.length;
@@ -24,32 +25,51 @@
 
   /* ================= APERTURA ================= */
   S.apertura = () => {
-    // Escena corta: el barrio a oscuras y Cocuyo que lo enciende.
+    // 2.7: escena de bienvenida. El barrio de noche, luciérnagas que flotan, Cocuyo encendido
+    // y el eslogan como titular. Debajo, los vecinos que esperan y el botón que enciende.
+    const LUCES = [[8, 22, 0], [18, 64, 1.4], [27, 38, 2.6], [36, 12, .8], [44, 56, 3.4], [58, 28, 1.8], [66, 70, .4], [74, 16, 2.2], [82, 48, 3], [90, 30, 1.1], [12, 44, 2.9], [52, 8, 1.6], [70, 58, 3.8], [94, 66, .6]];
+    const vecinos = ['familia', 'rosa', 'lina', 'tomas', 'vale', 'don-abel', 'seno-ines'];
     CH.pintar(`<div class="apertura-escena">
-      <div class="noche-mapa" aria-hidden="true">${CH.hayImagen('mapa', '') ? CH.ilus('mapa', '', { cls: 'mapa-noche' }) : mapaRespaldo(true)}</div>
-      <div class="apertura-texto">${CH.cocuyo('saludando', 'apertura-coc')}
-        <h1 class="t-display claro">Tu barrio está apagado.</h1>
-        <p class="claro">Con cada idea verde lo vamos a encender.</p>
-        <button class="btn btn-primario" data-sig>Encender</button></div>
-    </div>`, { clase: 'modo-noche', voz: { t: '¡Hola! Soy Cocuyo, una luciérnaga. Tu barrio está apagado. Con cada idea verde lo vamos a encender.' } });
+      <div class="noche-mapa" aria-hidden="true">${CH.hayImagen('mapaNoche', '') ? CH.ilus('mapaNoche', '', { cls: 'mapa-noche' }) : CH.hayImagen('mapa', '') ? CH.ilus('mapa', '', { cls: 'mapa-noche' }) : mapaRespaldo(true)}</div>
+      <div class="luciernagas" aria-hidden="true">${LUCES.map(([x, y, d]) => `<i style="left:${x}%;top:${y}%;animation-delay:-${d}s"></i>`).join('')}</div>
+      <div class="ap-logo" aria-hidden="true">${window.ARTE.logo.replace(/#2B211D/gi, '#FFFAF2')}</div>
+      <div class="ap-heroe" aria-hidden="true"><span class="ap-halo"></span><span class="ap-aro"></span>${CH.cocuyo('saludando', 'apertura-coc')}</div>
+      <div class="apertura-texto">
+        <h1 class="ap-eslogan"><span>¿Y si lo</span> <span class="luz">inventas tú?</span></h1>
+        <p class="ap-sub">Tu barrio está apagado. Con cada idea verde lo vamos a encender.</p>
+        <div class="ap-vecinos" aria-hidden="true"><span class="caras">${vecinos.map(v => CH.cara(v, 'ap-cara')).join('')}</span><span>Tus vecinos te esperan</span></div>
+        <button class="btn btn-primario ap-btn" data-sig>${I.estrella}Encender mi barrio</button></div>
+    </div>`, { clase: 'modo-noche', voz: { t: '¡Hola! Soy Cocuyo, una luciérnaga. ¿Y si lo inventas tú? Tu barrio está apagado. Con cada idea verde lo vamos a encender.' } });
     CH.on('[data-sig]', 'click', ev => { CH.sonido('enciende'); CH.chispas(ev.currentTarget, 18); setTimeout(eleccion, CH.menosMovimiento() ? 0 : 450); });
   };
+  // Colores suaves para el fondo de cada inventor, como cromos.
+  const TONO_AV = { trenzas: '#FFE3C2', gafas: '#D8EEF7', mochila: '#F6DDE6', silla: '#E3F1D6', audifono: '#E8E2F7', sonrisa: '#FFF1B8' };
   function eleccion() {
     let av = CH.E.avatar, nv = CH.E.nivel;
+    const cuerpo = id => CH.hayImagen('avatarCuerpo', id) ? CH.ilus('avatarCuerpo', id, { cls: 'esc-av' }) : CH.avatar(id, 'esc-av');
     CH.pintar(`<div class="pantalla apertura">
-      <div class="brillo-fondo" aria-hidden="true"></div>
       <div class="barra"><span class="logo crece">${window.ARTE.logo}</span><a class="btn btn-borde btn-chico" href="#adultos">Adultos</a></div>
-      <div class="habla-grande">${CH.cocuyo('saludando', 'coc-apertura')}<p class="globo">¡Hola! Soy Cocuyo. ¿Quién va a inventar hoy?</p></div>
-      <div><h1 class="t-titulo">Elige tu inventor</h1><p class="t-nota">Lo puedes cambiar luego. No pedimos tu nombre.</p></div>
-      <div class="avatares" role="radiogroup" aria-label="Inventores">${CH.AVATARES.map(a => `<button role="radio" aria-checked="${a.id === av}" data-av="${a.id}" aria-label="${esc(a.nombre)}">${CH.avatar(a.id, 'av-img')}<span class="marca" aria-hidden="true">${I.check}</span></button>`).join('')}</div>
-      <h2 class="etiqueta-campo" id="lbl-edad">¿Cuántos años tienes?</h2>
-      <div class="niveles" role="radiogroup" aria-labelledby="lbl-edad">
-        <button role="radio" data-nv="explorador" aria-checked="${nv === 'explorador'}"><b>Explorador</b><span>8 a 10 años</span></button>
-        <button role="radio" data-nv="experto" aria-checked="${nv === 'experto'}"><b>Experto</b><span>11 a 12 años</span></button></div>
+      <div class="escenario" aria-hidden="true">
+        ${CH.hayImagen('zona', 'plaza') ? CH.ilus('zona', 'plaza', { cls: 'esc-fondo' }) : ''}<span class="esc-velo"></span>
+        <p class="globo esc-globo">¡Hola! Soy Cocuyo. ¿Quién va a inventar hoy?</p>
+        <span class="esc-coc">${CH.cocuyo('saludando')}</span>
+        <span class="esc-tu" data-esc-av>${cuerpo(av)}</span>
+        <span class="esc-piso"></span>
+      </div>
+      <div class="bloque-eleccion"><h1 class="t-titulo">Elige tu inventor</h1><p class="t-nota">Lo puedes cambiar luego. No pedimos tu nombre.</p></div>
+      <div class="avatares" role="radiogroup" aria-label="Inventores">${CH.AVATARES.map(a => `<button role="radio" aria-checked="${a.id === av}" data-av="${a.id}" aria-label="${esc(a.nombre)}" style="--tono:${TONO_AV[a.id] || '#FFF'}">${CH.avatar(a.id, 'av-img')}<span class="marca" aria-hidden="true">${I.check}</span></button>`).join('')}</div>
+      <section class="edad" aria-labelledby="lbl-edad">
+        <h2 class="edad-titulo" id="lbl-edad">¿Cuántos años tienes?</h2>
+        <div class="niveles" role="radiogroup" aria-labelledby="lbl-edad">
+          <button role="radio" data-nv="explorador" aria-checked="${nv === 'explorador'}"><span class="nv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="#D8EEF7" stroke="currentColor" stroke-width="2"/><path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M7 8.5a3.5 3.5 0 0 1 3-2.5" stroke="#FFF" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg></span><b>Explorador</b><span>8 a 10 años</span></button>
+          <button role="radio" data-nv="experto" aria-checked="${nv === 'experto'}"><span class="nv-ico" aria-hidden="true">${I.estrella}</span><b>Experto</b><span>11 a 12 años</span></button></div>
+      </section>
       <div class="abajo fila"><button class="btn-redondo" data-voz aria-label="Escuchar">${I.voz}</button><button class="btn btn-primario crece" data-ok>¡Vamos a inventar!</button></div>
     </div>`, { voz: { t: '¿Quién va a inventar hoy? Elige tu inventor y tu edad.' } });
     CH.on('[data-voz]', 'click', () => CH.hablar({ t: '¿Quién va a inventar hoy? Elige tu inventor y tu edad.' }));
-    CH.on('[data-av]', 'click', ev => { av = ev.currentTarget.dataset.av; CH.$main.querySelectorAll('[data-av]').forEach(b => b.setAttribute('aria-checked', b.dataset.av === av)); CH.sonido('toque'); });
+    CH.on('[data-av]', 'click', ev => { av = ev.currentTarget.dataset.av; CH.$main.querySelectorAll('[data-av]').forEach(b => b.setAttribute('aria-checked', b.dataset.av === av));
+      const tu = CH.$main.querySelector('[data-esc-av]'); if (tu) { tu.innerHTML = cuerpo(av); tu.classList.remove('salta'); void tu.offsetWidth; tu.classList.add('salta'); }
+      CH.sonido('toque'); });
     CH.on('[data-nv]', 'click', ev => { nv = ev.currentTarget.dataset.nv; CH.$main.querySelectorAll('[data-nv]').forEach(b => b.setAttribute('aria-checked', b.dataset.nv === nv)); CH.sonido('toque'); });
     CH.on('[data-ok]', 'click', () => { CH.E.avatar = av; CH.E.nivel = nv; CH.E.visto = true; CH.guardar(); CH.aplicarAjustes(); CH.ir('#barrio'); });
   }
@@ -77,14 +97,22 @@
         <a class="zona-et" href="${abierta ? '#zona/' + z.id : '#barrio'}" ${abierta ? '' : 'aria-disabled="true" data-cerrada="' + z.id + '"'} aria-label="${esc(desc)}"><span>${esc(z.nombre)}</span>${estado}</a></div>`;
     }).join('');
     // Manzanas: zona de toque grande y velo de estado (apagada, tenue, encendida).
+    // 2.7: el mapa base es la versión de noche; cada manzana tiene encima su versión de día recortada con bordes difusos,
+    // cada vez más visible a medida que avanza la zona. Con el barrio completo amanece todo el mapa.
+    const noche = CH.hayImagen('mapaNoche', '');
+    const nivelLuz = id => { const e = estadoZona(id); return e === 'completa' ? 1 : e === 'cerrada' ? 0 : e === 'abierta' ? 0.16 : 0.4 + 0.45 * P.cuantos(id) / P.total(id); };
+    const todoListo = CH.ZONAS.every(z => P.completa(z.id));
+    const luces = noche ? CH.ZONAS.map(z => { const [x0, y0, x1, y1] = z.bloque, m = 2.5, a = Math.max(0, x0 - m), b = Math.max(0, y0 - m * .53), w = Math.min(100, x1 + m) - a, h = (y1 + m * .53) - b;
+        return `<div class="zona-luz ${estadoZona(z.id)}" style="left:${a}%;top:${b}%;width:${w}%;height:${h}%;--luz:${nivelLuz(z.id)}" aria-hidden="true"><img src="img/fondos/barrio.webp" alt="" style="width:${(10000 / w).toFixed(3)}%;left:${(-a * 100 / w).toFixed(3)}%;top:${(-b * 100 / h).toFixed(3)}%"></div>`; }).join('')
+      + (todoListo ? `<div class="mapa-dia" aria-hidden="true">${CH.ilus('mapa', '')}</div>` : '') : '';
     const bloques = CH.ZONAS.map(z => { const [x0, y0, x1, y1] = z.bloque, e = estadoZona(z.id);
       return `<a class="zona-bloque ${e}" href="${e === 'cerrada' ? '#barrio' : '#zona/' + z.id}" ${e === 'cerrada' ? 'data-cerrada="' + z.id + '"' : ''} tabindex="-1" aria-hidden="true" style="left:${x0}%;top:${y0}%;width:${x1 - x0}%;height:${y1 - y0}%"></a>`; }).join('');
     const zs = sug && CH.zona(sug.zona);
     const tarjeta = sug ? (() => { const i = CH.RUTAS[sug.zona].indexOf(sug.ep) + 1; return `<a class="seguir-tarjeta" href="#ep/${sug.ep.id}" style="--z:${zs.color};--zt:${zs.tinta}">
         <span class="seguir-cara" aria-hidden="true">${zs.quien === 'cocuyo' || zs.quien === 'familia' ? CH.cocuyo('feliz') : CH.cara(zs.quien)}</span>
-        <span class="crece"><span class="seguir-zona">${esc(zs.nombre)} · episodio ${i} de ${P.total(sug.zona)}</span><b>${esc(sug.ep.titulo)}</b></span>
+        <span class="crece"><span class="seguir-zona">${esc(zs.nombre)} · ${i} de ${P.total(sug.zona)}</span><b>${esc(sug.ep.titulo)}</b></span>
         <span class="btn btn-primario btn-chico" aria-hidden="true">${P.algunEpisodio() ? 'Seguir' : 'Empezar'}${I.flecha}</span></a>`; })()
-      : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Juega los minijuegos o completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
+      : `<a class="seguir-tarjeta" href="#album"><span class="seguir-cara" aria-hidden="true">${CH.cocuyo('celebrando')}</span><span class="crece"><span class="seguir-zona">¡Barrio completo!</span><b>Completa tu álbum</b></span><span class="btn btn-primario btn-chico" aria-hidden="true">Álbum${I.flecha}</span></a>`;
     // Cocuyo espera en la avenida, frente a la manzana de la zona sugerida (sin zona: junto a su estatua).
     const cy = zs ? (zs.bloque[1] + zs.bloque[3]) / 2 - 5 : 28, cx = zs ? (zs.mapa.x < 50 ? 45 : 55) : 50;
     CH.pintar(`<div class="pantalla-mapa">
@@ -97,9 +125,9 @@
       <h1 class="solo-lector">Tu barrio: ${enc} de 8 zonas encendidas</h1>
       <div class="mapa-marco">
       <div class="mapa" role="group" aria-label="Mapa del barrio">
-        <div class="mapa-img" aria-hidden="true">${CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false)}</div>
-        ${bloques}
-        <span class="coc-mapa-pos" style="top:${cy}%;left:${cx}%" aria-hidden="true">${CH.cocuyo('feliz', 'coc-mapa')}</span>
+        <div class="mapa-img" aria-hidden="true">${noche ? CH.ilus('mapaNoche', '') : CH.hayImagen('mapa', '') ? CH.ilus('mapa', '') : mapaRespaldo(false)}</div>
+        ${luces}${bloques}
+        <span class="coc-mapa-pos" style="top:${cy}%;left:${cx}%" aria-hidden="true"><span class="coc-halo"></span>${CH.cocuyo('feliz', 'coc-mapa')}</span>
         ${zonas}
       </div>
       <div class="flota-abajo">${tarjeta}</div>

@@ -137,6 +137,8 @@
     avatar: id => HAY.has(`img/avatares/avatar-${id}-cara.webp`) ? `img/avatares/avatar-${id}-cara.webp` : `img/avatares/avatar-${id}.svg`,
     fondo: id => `img/fondos/fondo-${id}.webp`,
     mapa: () => 'img/fondos/barrio.webp',
+    mapaNoche: () => 'img/fondos/barrio-noche.webp',
+    avatarCuerpo: id => `img/avatares/avatar-${id}.webp`,
     zona: id => `img/zonas/${id}.webp`,
     escena: id => `img/escenas/${id}.svg`,
     objeto: id => `img/objetos/${id}.svg`,
