@@ -33,7 +33,7 @@
       <div class="noche-mapa" aria-hidden="true">${CH.hayImagen('mapaNoche', '') ? CH.ilus('mapaNoche', '', { cls: 'mapa-noche' }) : CH.hayImagen('mapa', '') ? CH.ilus('mapa', '', { cls: 'mapa-noche' }) : mapaRespaldo(true)}</div>
       <div class="luciernagas" aria-hidden="true">${LUCES.map(([x, y, d]) => `<i style="left:${x}%;top:${y}%;animation-delay:-${d}s"></i>`).join('')}</div>
       <div class="ap-logo" aria-hidden="true">${window.ARTE.logo.replace(/#2B211D/gi, '#FFFAF2')}</div>
-      <div class="ap-heroe" aria-hidden="true"><span class="ap-halo"></span><span class="ap-aro"></span>${CH.cocuyo('saludando', 'apertura-coc')}</div>
+      <div class="ap-heroe" aria-hidden="true"><span class="ap-halo"></span>${CH.cocuyo('saludando', 'apertura-coc')}</div>
       <div class="apertura-texto">
         <h1 class="ap-eslogan"><span>¿Y si lo</span> <span class="luz">inventas tú?</span></h1>
         <p class="ap-sub">Tu barrio está apagado. Con cada idea verde lo vamos a encender.</p>
