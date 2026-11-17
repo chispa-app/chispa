@@ -1154,7 +1154,8 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 .vecino img[src$=".webp"] { width: auto; height: 70px; filter: drop-shadow(0 3px 3px rgba(43,33,29,.35)); }
 /* Episodio en plano medio: el personaje llena el lienzo y sus piernas pasan detrás de la hoja. */
 .ep-lienzo { container-type: size; }
-.actor-cuerpo:has(img[src$=".webp"]) { width: auto; max-width: 52%; margin-bottom: 0; display: flex; justify-content: center; }
+.actor-cuerpo:has(img[src$=".webp"]) { width: auto; max-width: 52%; margin-bottom: 0; display: flex; justify-content: flex-start; }
+/* Personajes con un objeto que sobresale a un lado (Julián y su molinete): se ancla el cuerpo, no la caja de la imagen. */
 .actor-cuerpo img.actor-fig[src$=".webp"] { width: auto; max-width: none; height: 118cqh; max-height: 560px; margin-bottom: -26cqh; filter: drop-shadow(0 10px 14px rgba(43,33,29,.28)); }
 /* Héroes de zona y de minijuego: de la rodilla para arriba. */
 .zona-heroe .zona-quien[src$=".webp"] { width: auto; height: 118%; bottom: -36%; filter: drop-shadow(0 8px 12px rgba(43,33,29,.3)); }
@@ -1165,3 +1166,4 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 .avatares button .av-img[src$=".webp"] { left: 6%; top: 12%; width: 88%; height: auto; transform: none; }
 .mi-inventor .av-mini[src$=".webp"] { left: 0; top: 4%; width: 100%; height: 100%; transform: none; object-fit: cover; }
 @media (max-height: 760px) { .avatares button .av-img[src$=".webp"] { left: 13%; top: 4%; width: 74%; } }
+.zona-heroe:has(.vista) .zona-quien[src*="personaje-julian"] { /* el molinete sobresale: se centra el cuerpo como el de los demás vecinos */ right: calc(4% - 30px); }
