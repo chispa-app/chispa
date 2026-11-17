@@ -1166,4 +1166,6 @@ html[data-movimiento="menos"] *, html[data-movimiento="menos"] *::before, html[d
 .avatares button .av-img[src$=".webp"] { left: 6%; top: 12%; width: 88%; height: auto; transform: none; }
 .mi-inventor .av-mini[src$=".webp"] { left: 0; top: 4%; width: 100%; height: 100%; transform: none; object-fit: cover; }
 @media (max-height: 760px) { .avatares button .av-img[src$=".webp"] { left: 13%; top: 4%; width: 74%; } }
-.zona-heroe:has(.vista) .zona-quien[src*="personaje-julian"] { /* el molinete sobresale: se centra el cuerpo como el de los demás vecinos */ right: calc(4% - 30px); }
+/* Julián sostiene el molino a un lado: su eje (cabeza y piernas) queda al 37 % del ancho de la imagen y no al centro.
+   Se corre 23,5 % de su propio ancho para que el eje coincida con el de los demás vecinos anclados a la derecha. */
+.zona-heroe:has(.vista) .zona-quien[src*="personaje-julian."], .zona-pin.der .vecino img[src*="personaje-julian."] { transform: translateX(23.5%); }
